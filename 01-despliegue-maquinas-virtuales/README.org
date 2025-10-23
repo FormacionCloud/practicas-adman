@@ -1,0 +1,63 @@
+* EC2 Image Builder: creación y gestión automatizada de AMIs
+** Documentación y recursos adicionales
+- [[https://docs.aws.amazon.com/imagebuilder/latest/userguide/what-is-image-builder.html][Guía de usuario de Image Builder]]
+
+** Instrucciones
+- Utiliza el curso *Learner Lab* de AWS Academy para realizar esta práctica.
+- Utilizaremos el servicio *EC2 Image Builder* para esta tarea.
+- Crea un *componente personalizado* basado en el siguiente documento, realizando los cambios que se indican a continuación:
+  #+begin_src yaml
+  name: DocumentoNOMBREAPELLIDOS
+  description: Documento de NOMBRE APELLIDOS
+  schemaVersion: 1.0
+  phases:
+    - name: build
+      steps:
+        - name: CrearCarpetaNOMBREAPELLIDOS
+          action: CreateFolder
+          inputs:
+            - path: /datos/
+        - name: DownloadRemoteFile
+          action: WebDownload
+          maxAttempts: 3
+          inputs:
+            - source: https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip
+              destination: /datos/mifichero
+        # TODO: Añade aquí el paso para actualizar el sistema operativo
+        # Fuente: https://docs.aws.amazon.com/imagebuilder/latest/userguide/toe-action-modules.html#action-modules-updateos
+    - name: test
+      steps:
+      - name: ComprobarFicheroNOMBREAPELLIDOS
+        action: ExecuteBash
+        inputs:
+          commands:
+            - |
+              if [ -f "/datos/mifichero" ];
+              then
+                exit 0
+              else
+                exit 1
+              fi
+  #+end_src
+  Sustituye ~NOMBRE~ y ~APELLIDOS~ por tu nombre y apellidos reales eliminando acentos y caracteres no ingleses (como la ~ñ~).
+  *Añade un paso* para *actualizar el sistema* operativo mediante la [[https://docs.aws.amazon.com/imagebuilder/latest/userguide/toe-action-modules.html#action-modules-updateos][acción UpdateOS]].
+- Crea una *Receta de imagen* (/Image Recipe/) que utilice la AMI de *Amazon Linux 2023* más reciente como base y que *incluya el componente* personalizado creado en el paso anterior.
+- Crea una *Configuración de Infraestructura* (/Infrastructure Configuration/) que utilice el *rol de laboratorio* (/IAM role/) y utilice instancias de tipo ~t3.micro~ exclusivamente.
+- Crea unos *Ajustes de Distribución* (/Distribution Settings/) que desplieguen la AMI en la región actual del laboratorio únicamente.
+- Por último, crea un *pipeline* en el servicio *AWS Image Builder* para automatizar la creación y gestión de una AMI personalizada. Configúralo para que se active de manera *manual*.
+  
+** Recomendaciones
+- Tienes un vídeo explicativo donde realizo una tarea similar a la propuesta
+
+** Comprobación del resultado
+Al finalizar el proceso, *lanza una máquina basada en la AMI creada* y comprueba que *existe el fichero* en la ruta ~/datos/mifichero~. Prueba también a *actualizar el sistema operativo* mediante ~sudo dnf upgrade~ y observa que el sistema está actualizado (no debería instalar ningún paquete o, como mucho, instalar algún paquete suelto si justo se acaba de liberar en ese momento).
+
+** Entrega
+Documenta la realización de la práctica explicando los pasos seguidos. Incluye las *capturas de pantalla* necesarias. Recuerda mostrar tus datos personales (nombre y apellidos) en aquellos apartados donde se indique.
+
+Adjunta captura donde se muestre el listado de AMIs de tu cuenta y aparezca la *AMI* creada con este proceso. Adjunta también capturas de los *logs de ejecución* del pipeline donde se muestre la ejecución de las acciones con tu nombre y apellidos.
+
+Incluye también en la memoria el código YAML del documento de componente que has creado para la práctica.
+
+** Limpieza
+Al finalizar, *elimina* la *máquina virtual*, la *AMI* creada, el *snapshot* asociado y el *pipeline* de Image Builder.
