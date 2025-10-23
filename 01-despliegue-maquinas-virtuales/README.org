@@ -44,7 +44,7 @@
 - Crea una *Receta de imagen* (/Image Recipe/) que utilice la AMI de *Amazon Linux 2023* más reciente como base y que *incluya el componente* personalizado creado en el paso anterior.
 - Crea una *Configuración de Infraestructura* (/Infrastructure Configuration/) que utilice el *rol de laboratorio* (/IAM role/) y utilice instancias de tipo ~t3.micro~ exclusivamente.
 - Crea unos *Ajustes de Distribución* (/Distribution Settings/) que desplieguen la AMI en la región actual del laboratorio únicamente.
-- Por último, crea un *pipeline* en el servicio *AWS Image Builder* para automatizar la creación y gestión de una AMI personalizada. Configúralo para que se active de manera *manual*.
+- Por último, crea un *pipeline* en el servicio *AWS Image Builder* para automatizar la creación y gestión de una AMI personalizada. Configúralo para que se active de manera *manual*. Lanza una ejecución del pipeline cuando lo hayas creado.
   
 ** Recomendaciones
 - Tienes un vídeo explicativo donde realizo una tarea similar a la propuesta
