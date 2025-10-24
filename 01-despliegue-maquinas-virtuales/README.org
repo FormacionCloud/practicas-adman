@@ -43,7 +43,7 @@
   *Añade un paso* para *actualizar el sistema* operativo mediante la [[https://docs.aws.amazon.com/imagebuilder/latest/userguide/toe-action-modules.html#action-modules-updateos][acción UpdateOS]].
 - Crea una *Receta de imagen* (/Image Recipe/) que utilice la AMI de *Amazon Linux 2023* más reciente como base y que *incluya el componente* personalizado creado en el paso anterior.
 - Crea una *Configuración de Infraestructura* (/Infrastructure Configuration/) que utilice el *rol de laboratorio* (/IAM role/) y utilice instancias de tipo ~t3.micro~ exclusivamente.
-- Crea unos *Ajustes de Distribución* (/Distribution Settings/) que desplieguen la AMI en la región actual del laboratorio únicamente.
+- Crea unos *Ajustes de Distribución* (/Distribution Settings/) que desplieguen la AMI en las *dos regiones* disponibles en el laboratorio: ~us-east-1~ y ~us-west-2~.
 - Por último, crea un *pipeline* en el servicio *AWS Image Builder* para automatizar la creación y gestión de una AMI personalizada. Configúralo para que se active de manera *manual*. *Lanza una ejecución* del pipeline cuando lo hayas creado.
   
 ** Recomendaciones
