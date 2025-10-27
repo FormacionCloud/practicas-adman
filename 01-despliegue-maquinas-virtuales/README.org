@@ -25,6 +25,9 @@ Debes crear una *VPC sencilla*, que tenga una *subred pública*. No es necesario
 
 En principio no es necesario crear ningún grupo de seguridad, ya que la instancia no recibirá tráfico del exterior. Podemos utilizar el grupo de seguridad por defecto incluido en las VPCs.
 
+Asegúrate de *configurar la subred* para activar la opción ~Enable auto-assign public IPv4 address~. De esta manera, las máquinas que se lancen en esa subred recibirán una *IP pública*. Esto es necesario para que la máquina pueda ser controlable mediante el servicio de Systems Manager, que utiliza Image Builder para realizar la automatización.
+[[./imagenes/vpc1.png]]
+
 ** Instrucciones
 - Esta práctica la realizaremos en la *Landing Zone*, dado que no es compatible con los laboratorios de Academy
 - La *región* de referencia para trabajar en la Landing Zone es *España* (~eu-south-2~)
