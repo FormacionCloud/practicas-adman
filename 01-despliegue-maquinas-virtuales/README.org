@@ -13,6 +13,7 @@ Para poder realizar esta práctica en la *Landing Zone*, deberás crear un *rol 
    - ~EC2InstanceProfileForImageBuilderECRContainerBuilds~
    - ~AmazonSSMManagedInstanceCore~
    [[./imagenes/rol2.png]]
+   
    [[./imagenes/rol3.png]]
 5. En la pantalla final, asigna un *nombre* al rol que incluya tu *nombre y apellidos* y *comprueba que has incluido las 3 políticas anteriores*:
   [[./imagenes/rol4.png]]
