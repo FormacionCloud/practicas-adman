@@ -2,8 +2,24 @@
 ** Documentación y recursos adicionales
 - [[https://docs.aws.amazon.com/imagebuilder/latest/userguide/what-is-image-builder.html][Guía de usuario de Image Builder]]
 
+** Prerrequisitos
+Para poder realizar esta práctica en la *Landing Zone*, deberás crear un *rol de IAM* para que las instancias que lance el servicio EC2 Image Builder puedan hacer las acciones que vamos a configurar. Para ello, sigue los siguientes pasos:
+1. Accede al servicio *IAM*.
+2. Selecciona la opción *Roles* del menú.
+3. Pulsa en el botón ~Create role~. En la ventana que se abre, selecciona la opción ~AWS service~ y a continuación elige ~EC2~.
+  [[./imagenes/rol1.png]]
+4. En la pantalla de ~Add permissions~, busca y selecciona las siguientes *políticas administradas*, tal como se indica en la [[https://docs.aws.amazon.com/imagebuilder/latest/userguide/security_iam_service-with-iam.html#security_iam_id-based-policy-examples][documentación relacionada]]:
+   - ~EC2InstanceProfileForImageBuilder~
+   - ~EC2InstanceProfileForImageBuilderECRContainerBuilds~
+   - ~AmazonSSMManagedInstanceCore~
+   [[./imagenes/rol2.png]]
+   [[./imagenes/rol3.png]]
+5. En la pantalla final, asigna un *nombre* al rol que incluya tu *nombre y apellidos* y *comprueba que has incluido las 3 políticas anteriores*:
+  [[./imagenes/rol4.png]]
+
 ** Instrucciones
-- Utiliza el curso *Learner Lab* de AWS Academy para realizar esta práctica.
+- Esta práctica la realizaremos en la *Landing Zone*, dado que no es compatible con los laboratorios de Academy
+- La *región* de referencia para trabajar en la Landing Zone es *España* (~eu-south-2~)
 - Utilizaremos el servicio *EC2 Image Builder* para esta tarea.
 - Crea un *componente personalizado* basado en el siguiente documento, realizando los cambios que se indican a continuación:
   #+begin_src yaml
@@ -42,8 +58,8 @@
   Sustituye ~NOMBRE~ y ~APELLIDOS~ por tu nombre y apellidos reales eliminando acentos y caracteres no ingleses (como la ~ñ~).
   *Añade un paso* para *actualizar el sistema* operativo mediante la [[https://docs.aws.amazon.com/imagebuilder/latest/userguide/toe-action-modules.html#action-modules-updateos][acción UpdateOS]].
 - Crea una *Receta de imagen* (/Image Recipe/) que utilice la AMI de *Amazon Linux 2023* más reciente como base y que *incluya el componente* personalizado creado en el paso anterior.
-- Crea una *Configuración de Infraestructura* (/Infrastructure Configuration/) que utilice el *rol de laboratorio* (/IAM role/) y utilice instancias de tipo ~t3.micro~ exclusivamente.
-- Crea unos *Ajustes de Distribución* (/Distribution Settings/) que desplieguen la AMI en las *dos regiones* disponibles en el laboratorio: ~us-east-1~ y ~us-west-2~.
+- Crea una *Configuración de Infraestructura* (/Infrastructure Configuration/) que utilice el *rol creado en el apartado de prerrequisitos* (/IAM role/) y utilice instancias de tipo ~t3.micro~ exclusivamente.
+- Crea unos *Ajustes de Distribución* (/Distribution Settings/) que desplieguen la AMI en las *dos regiones* disponibles en la Landing Zone: ~eu-south-2~ y ~us-east-1~.
 - Por último, crea un *pipeline* en el servicio *AWS Image Builder* para automatizar la creación y gestión de una AMI personalizada. Configúralo para que se active de manera *manual*. *Lanza una ejecución* del pipeline cuando lo hayas creado.
   
 ** Recomendaciones
@@ -60,4 +76,4 @@ Adjunta captura donde se muestre el listado de AMIs de tu cuenta y aparezca la *
 Incluye también en la memoria el *código YAML* del documento de componente que has creado para la práctica.
 
 ** Limpieza
-Al finalizar, *elimina* la *máquina virtual*, la *AMI* creada, el *snapshot* asociado y el *pipeline* de Image Builder.
+Al finalizar, *elimina* las *máquina virtual*, las *AMIs* creadas y los *snapshots* creados en las *dos regiones*. Por último, elimina también el *pipeline* de Image Builder.
