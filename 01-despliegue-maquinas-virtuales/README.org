@@ -87,4 +87,6 @@ Adjunta captura donde se muestre el listado de AMIs de tu cuenta y aparezca la *
 Incluye también en la memoria el *código YAML* del documento de componente que has creado para la práctica.
 
 ** Limpieza
-Al finalizar, *elimina* las *máquina virtual*, las *AMIs* creadas y los *snapshots* creados en las *dos regiones*. Por último, elimina también el *pipeline* de Image Builder.
+Al finalizar, *elimina* la *máquina virtual* creada para comprobar el resultado.
+
+*No elimines* las *AMIs* creadas, ni los *snapshots* creados en las *dos regiones*, ni el *pipeline* de Image Builder hasta que te lo indique en la corrección. Una vez corregida la tarea, procede a eliminar dichos recursos.
