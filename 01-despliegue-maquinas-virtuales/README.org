@@ -3,6 +3,7 @@
 - [[https://docs.aws.amazon.com/imagebuilder/latest/userguide/what-is-image-builder.html][Guía de usuario de Image Builder]]
 
 ** Prerrequisitos
+*** Rol de ejecución para instancias
 Para poder realizar esta práctica en la *Landing Zone*, deberás crear un *rol de IAM* para que las instancias que lance el servicio EC2 Image Builder puedan hacer las acciones que vamos a configurar. Para ello, sigue los siguientes pasos:
 1. Accede al servicio *IAM*.
 2. Selecciona la opción *Roles* del menú.
@@ -13,10 +14,16 @@ Para poder realizar esta práctica en la *Landing Zone*, deberás crear un *rol 
    - ~EC2InstanceProfileForImageBuilderECRContainerBuilds~
    - ~AmazonSSMManagedInstanceCore~
    [[./imagenes/rol2.png]]
-   
    [[./imagenes/rol3.png]]
 5. En la pantalla final, asigna un *nombre* al rol que incluya tu *nombre y apellidos* y *comprueba que has incluido las 3 políticas anteriores*:
   [[./imagenes/rol4.png]]
+
+*** VPC
+La Landing Zone no incluye la VPC por defecto, solo una VPC privada. Por tanto, es necesario crear una *VPC* que tenga una *subred pública* para que las instancias que lance Image Builder puedan conectarse al servicio sin problema. No es la manera más elegante, pero cumple la función ;)
+
+Debes crear una *VPC sencilla*, que tenga una *subred pública*. No es necesario que tenga subredes privadas ni puntos de acceso.
+
+En principio no es necesario crear ningún grupo de seguridad, ya que la instancia no recibirá tráfico del exterior. Podemos utilizar el grupo de seguridad por defecto incluido en las VPCs.
 
 ** Instrucciones
 - Esta práctica la realizaremos en la *Landing Zone*, dado que no es compatible con los laboratorios de Academy
@@ -59,7 +66,7 @@ Para poder realizar esta práctica en la *Landing Zone*, deberás crear un *rol 
   Sustituye ~NOMBRE~ y ~APELLIDOS~ por tu nombre y apellidos reales eliminando acentos y caracteres no ingleses (como la ~ñ~).
   *Añade un paso* para *actualizar el sistema* operativo mediante la [[https://docs.aws.amazon.com/imagebuilder/latest/userguide/toe-action-modules.html#action-modules-updateos][acción UpdateOS]].
 - Crea una *Receta de imagen* (/Image Recipe/) que utilice la AMI de *Amazon Linux 2023* más reciente como base y que *incluya el componente* personalizado creado en el paso anterior.
-- Crea una *Configuración de Infraestructura* (/Infrastructure Configuration/) que utilice el *rol creado en el apartado de prerrequisitos* (/IAM role/) y utilice instancias de tipo ~t3.micro~ exclusivamente.
+- Crea una *Configuración de Infraestructura* (/Infrastructure Configuration/) que utilice el *rol creado en el apartado de prerrequisitos* (/IAM role/) y utilice instancias de tipo ~t3.micro~ exclusivamente. En el apartado de *VPC, subnet and security groups*, selecciona la *VPC y la subred pública creadas en el apartado de prerrequisitos*; en el grupo de seguridad, selecciona el grupo por defecto.
 - Crea unos *Ajustes de Distribución* (/Distribution Settings/) que desplieguen la AMI en las *dos regiones* disponibles en la Landing Zone: ~eu-south-2~ y ~us-east-1~.
 - Por último, crea un *pipeline* en el servicio *AWS Image Builder* para automatizar la creación y gestión de una AMI personalizada. Configúralo para que se active de manera *manual*. *Lanza una ejecución* del pipeline cuando lo hayas creado.
   
