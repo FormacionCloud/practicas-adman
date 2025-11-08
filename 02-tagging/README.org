@@ -9,7 +9,7 @@
 ** Creación de recursos
 Esta práctica la realizaremos en la *Landing Zone*. Crea los siguientes recursos en tu cuenta:
 - *VPC* con *dos subredes públicas*. Asegúrate de *configurar las subredes* con la opción ~Enable auto-assign public IPv4 address~
-- *Rol* de ejecución de IAM que incluya la política ~AmazonSSMManagedEC2InstanceDefaultPolicy~. El nombre del rol debe tenet tu *NOMBRE* y *APELLIDOS*
+- *Rol* de ejecución de IAM que incluya la política ~AmazonSSMManagedEC2InstanceDefaultPolicy~. El nombre del rol debe tener tu *NOMBRE* y *APELLIDOS*
 - *3 máquinas* de tipo ~t3.micro~ con Amazon Linux 2023 con las siguientes características:
   - Nombres: ~TUS_INICIALES_1~, ~TUS_INICIALES_2~, ~TUS_INICIALES_3~
   - Desplegadas en una subred de la VPC creada
