@@ -1,0 +1,71 @@
+* Gestión de recursos con etiquetas
+** Documentación y recursos adicionales
+- [[https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction_attribute-based-access-control.html][Definición de permisos en función de los atributos con la autorización de ABAC]]
+- [[https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/Using_Filtering.html][Find your Amazon EC2 resources]]
+- [[https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/filtering-the-list-by-tag.html][Filter Amazon EC2 resources by tag]]
+- [[https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_examples_ec2-start-stop-tags.html][EC2: Start or stop instances based on tags]]
+- [[https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_examples_ec2-start-stop-match-tags.html][EC2: Start or stop instances based on matching principal and resource tag]]s
+
+** Creación de recursos
+Esta práctica la realizaremos en la *Landing Zone*. Crea los siguientes recursos en tu cuenta:
+- *VPC* con *dos subredes públicas*. Asegúrate de *configurar las subredes* con la opción ~Enable auto-assign public IPv4 address~
+- *Rol* de ejecución de IAM que incluya la política ~AmazonSSMManagedEC2InstanceDefaultPolicy~. El nombre del rol debe tenet tu *NOMBRE* y *APELLIDOS*
+- *3 máquinas* de tipo ~t3.micro~ con Amazon Linux 2023 con las siguientes características:
+  - Nombres: ~TUS_INICIALES_1~, ~TUS_INICIALES_2~, ~TUS_INICIALES_3~
+  - Desplegadas en una subred de la VPC creada
+  - Disco por defecto
+  - Grupo de seguridad por defecto de la VPC
+  - Perfil de instancia igual al rol de ejecución creado
+- Una vez creadas las instancias, accede en remoto a las 3 e instala el paquete ~stress~ mediante el comando ~dnf install stress~
+- Arranca el stress en las instancias mediante el comando ~stress -c 5~. De esta manera podremos visualizar un aumento en el uso de CPU en las métricas
+
+** Etiquetado y agrupación de recursos
+Una vez creados los recursos, procederemos a su etiquetado para posterior gestión. Para ello, realiza los siguientes pasos:
+- Accede al servicio *AWS Resource Explorer* en la consola
+- Filtra los recursos del servicio EC2 mediante el filtro ~service=ec2~
+- Aplica las siguientes etiquetas a los diferentes tipos de recurso. Puedes hacer filtrados adicionales con filtros similares a ~Resource type = ec2:TIPO_RECURSO~, por ejemplo ~Resource type = ec2:instance~ o ~Resource type = ec2:vpc~. *Utiliza siempre minúsculas*. Sustituye ~TUS_INICIALES~ por tus iniciales en minúculas.
+  - Todos los recursos creados para la práctica (VPC, subredes, IGW, rol, instancias, grupos de seguridad,...): ~key = TUS_INICIALES:project~, ~value = prac-tagging~
+  - Instancias: ~key = TUS_INICIALES:owner~, ~value = TUS_INICIALES~
+  - Instancia 1: ~key = TUS_INICIALES:service~, ~value = servicio1~
+  - Instancias 2 y 3: ~key = TUS_INICIALES:service~, ~value = servicio2~
+  - Instancias 1 y 3: ~key = TUS_INICIALES:envtype~, ~value = production~
+
+** Comprobación del correcto etiquetado con AWS Config
+Crea una regla en AWS Config que monitorice el correcto etiquetado de los recursos. Utiliza para ello la regla gestionada por AWS denominada ~required-tags~. Comprueba que se aplican los nombres de etiquetas ~TUS_INICIALES:project~, ~TUS_INICIALES:owner~, ~TUS_INICIALES:service~ y ~TUS_INICIALES:envtype~.
+
+Comprueba el estado de la configuración y comenta los resultados.
+
+** Monitorización de recursos etiquetados con CloudWatch
+- Accede al panel de métricas del servicio CloudWatch y selecciona *Explorer*
+- En el apartado de métricas, selecciona la métrica ~EC2 Instance: CPU Utilization~
+- En el apartado ~From~, selecciona ~TUS_INICIALES:service=servicio2~
+- Observa el uso de la CPU de las dos instancias etiquetadas con ~TUS_INICIALES:servicio2~
+
+** Agrupación de recursos mediante AWS Resource Groups
+- Accede al servicio ~AWS Resource Groups~ y crea un *grupo de recursos* basado en etiquetas
+- En los criterios de agrupación, selecciona los recursos etiquetados con la etiqueta ~TUS_INICIALES:envtype~ y valor ~production~
+- Muestra el grupo y comprueba que aparecen las instancias 1 y 3.
+- Exporta el resultado a CSV. Comprueba el contenido de dicho archivo
+
+** Búsqueda de recursos etiquetados mediante CLI
+- Ejecuta el siguiente comando para obtener los ~id~ de las instancias identificadas con la etiqueta ~TUS_INICIALES:owner~
+  #+begin_src bash
+    aws ec2 describe-instances --filters Name=tag:TUS_INICIALES:owner,Values=TUS_INICIALES --query 'Reservations[].Instances[].InstanceId'
+  #+end_src
+- ¿Cómo obtendrías las instancias con la etiqueta ~TUS_INICIALES:envtype~ con valor ~production~?
+- ¿Y las instancias con la etiqueta ~TUS_INICIALES:service~ con valor ~service2~?
+- De acuerdo con la documentación [[https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/Using_Filtering.html][Find your Amazon EC2 resources]] y [[https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/filtering-the-list-by-tag.html][Filter Amazon EC2 resources by tag]], ¿cómo obtendrías el atributo ~ImageId~ además del ~InstanceId~ para cada instancia?
+
+** Control de permisos basado en atributos (ABAC)
+De acuerdo con el ejemplo [[https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_examples_ec2-start-stop-match-tags.html][EC2: Start or stop instances based on matching principal and resource tags]]:
+- Crea una *política IAM asociada a identidad* que permita *iniciar o detener instancias EC2* siempre que la *etiqueta de la identidad y la de la máquina* tengan el *mismo valor* para la etiqueta ~TUS_INICIALES:service~
+- Crea un *rol* asociado a dicha política
+- Asocia a dicho rol la etiqueta ~TUS_INICIALES:service~ con valor ~servicio2~
+- *Asume el rol* en la consola e intenta iniciar o detener la instancia 1. ¿Puedes hacerlo? ¿Por qué?
+- Con el mismo rol, intenta iniciar o detener la instancia 2 o la instancia 3. ¿Puedes hacerlo? ¿Por qué?
+
+** Entrega
+Documenta la realización de la práctica explicando los pasos seguidos. Incluye las *capturas de pantalla* necesarias. Recuerda mostrar tus datos personales (nombre y apellidos y/o iniciales) en aquellos apartados donde se indique.
+
+** Limpieza
+Al finalizar, *elimina los recursos creados* en la práctica.
