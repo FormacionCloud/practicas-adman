@@ -4,7 +4,7 @@
 - [[https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/Using_Filtering.html][Find your Amazon EC2 resources]]
 - [[https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/filtering-the-list-by-tag.html][Filter Amazon EC2 resources by tag]]
 - [[https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_examples_ec2-start-stop-tags.html][EC2: Start or stop instances based on tags]]
-- [[https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_examples_ec2-start-stop-match-tags.html][EC2: Start or stop instances based on matching principal and resource tag]]s
+- [[https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_examples_ec2-start-stop-match-tags.html][EC2: Start or stop instances based on matching principal and resource tags]]
 - [[https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction_attribute-based-access-control.html][Define permissions based on attributes with ABAC authorization]]
 
 ** Creación de recursos
