@@ -59,7 +59,7 @@ Comprueba el estado de la configuración y comenta los resultados.
 
 ** Control de permisos basado en atributos (ABAC)
 De acuerdo con el ejemplo [[https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_examples_ec2-start-stop-match-tags.html][EC2: Start or stop instances based on matching principal and resource tags]]:
-- Crea una *política IAM asociada a identidad* que permita *iniciar o detener instancias EC2* siempre que la *etiqueta de la identidad y la de la máquina* tengan el *mismo valor* para la etiqueta ~TUS_INICIALES:service~
+- Crea una *política IAM asociada a identidad* que permita *iniciar o detener instancias EC2* siempre que la *etiqueta de la identidad y la de la máquina* tengan el *mismo valor* para la etiqueta ~TUS_INICIALES:service~. Añade también una *cláusula* que incluya los permisos ~DescribeInstances~ para todas las instancias con el fin de poder visualizarlas al cambiar de rol
 - Crea un *rol* asociado a dicha política
 - Asocia a dicho rol la etiqueta ~TUS_INICIALES:service~ con valor ~servicio2~
 - *Asume el rol* en la consola e intenta iniciar o detener la instancia 1. ¿Puedes hacerlo? ¿Por qué?
