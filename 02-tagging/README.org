@@ -69,4 +69,4 @@ De acuerdo con el ejemplo [[https://docs.aws.amazon.com/IAM/latest/UserGuide/ref
 Documenta la realización de la práctica explicando los pasos seguidos. Incluye las *capturas de pantalla* necesarias. Recuerda mostrar tus datos personales (nombre y apellidos y/o iniciales) en aquellos apartados donde se indique.
 
 ** Limpieza
-Al finalizar, *elimina los recursos creados* en la práctica.
+Al finalizar, *elimina los recursos creados* en la práctica. Asegúrate de borrar las *instancias* y la *regla de AWS Config*.
