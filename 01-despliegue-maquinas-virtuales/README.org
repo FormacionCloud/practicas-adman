@@ -34,40 +34,41 @@ Asegúrate de *configurar la subred* para activar la opción ~Enable auto-assign
 - Utilizaremos el servicio *EC2 Image Builder* para esta tarea.
 - Crea un *componente personalizado* basado en el siguiente documento, realizando los cambios que se indican a continuación:
   #+begin_src yaml
-  name: DocumentoNOMBREAPELLIDOS
-  description: Documento de NOMBRE APELLIDOS
-  schemaVersion: 1.0
-  phases:
-    - name: build
-      steps:
-        - name: CrearCarpetaNOMBREAPELLIDOS
-          action: CreateFolder
+    name: DocumentoNOMBREAPELLIDOS
+    description: Documento de NOMBRE APELLIDOS
+    schemaVersion: 1.0
+    phases:
+      - name: build
+        steps:
+          - name: CrearCarpetaNOMBREAPELLIDOS
+            action: CreateFolder
+            inputs:
+              - path: /datos/
+          - name: DownloadRemoteFile
+            action: WebDownload
+            maxAttempts: 3
+            inputs:
+              - source: https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip
+                destination: /datos/mifichero
+          # TODO: Añade aquí el paso para actualizar el sistema operativo
+          # Fuente: https://docs.aws.amazon.com/imagebuilder/latest/userguide/toe-action-modules.html#action-modules-updateos
+          # Deja el código comentado, dado que Amazon Linux 2023 no es compatible con esta acción
+      - name: test
+        steps:
+        - name: ComprobarFicheroNOMBREAPELLIDOS
+          action: ExecuteBash
           inputs:
-            - path: /datos/
-        - name: DownloadRemoteFile
-          action: WebDownload
-          maxAttempts: 3
-          inputs:
-            - source: https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip
-              destination: /datos/mifichero
-        # TODO: Añade aquí el paso para actualizar el sistema operativo
-        # Fuente: https://docs.aws.amazon.com/imagebuilder/latest/userguide/toe-action-modules.html#action-modules-updateos
-    - name: test
-      steps:
-      - name: ComprobarFicheroNOMBREAPELLIDOS
-        action: ExecuteBash
-        inputs:
-          commands:
-            - |
-              if [ -f "/datos/mifichero" ];
-              then
-                exit 0
-              else
-                exit 1
-              fi
+            commands:
+              - |
+                if [ -f "/datos/mifichero" ];
+                then
+                  exit 0
+                else
+                  exit 1
+                fi
   #+end_src
   Sustituye ~NOMBRE~ y ~APELLIDOS~ por tu nombre y apellidos reales eliminando acentos y caracteres no ingleses (como la ~ñ~).
-  *Añade un paso* para *actualizar el sistema* operativo mediante la [[https://docs.aws.amazon.com/imagebuilder/latest/userguide/toe-action-modules.html#action-modules-updateos][acción UpdateOS]].
+  *Añade un paso* para *actualizar el sistema* operativo mediante la [[https://docs.aws.amazon.com/imagebuilder/latest/userguide/toe-action-modules.html#action-modules-updateos][acción UpdateOS]]. Deja el código *comentado*, dado que Amazon Linux 2023 no es compatible con esta acción.
 - Crea una *Receta de imagen* (/Image Recipe/) que utilice la AMI de *Amazon Linux 2023* más reciente como base y que *incluya el componente* personalizado creado en el paso anterior.
 - Crea una *Configuración de Infraestructura* (/Infrastructure Configuration/) que utilice el *rol creado en el apartado de prerrequisitos* (/IAM role/) y utilice instancias de tipo ~t3.micro~, ~t3.nano~ y ~t3.small~ (de esta manera el sistema tiene varios tamaños para elegir en caso de que haya problemas de capacidad de un tamaño concreto). En el apartado de *VPC, subnet and security groups*, selecciona la *VPC y la subred pública creadas en el apartado de prerrequisitos*; en el grupo de seguridad, selecciona el grupo por defecto.
 - Crea unos *Ajustes de Distribución* (/Distribution Settings/) que desplieguen la AMI en las *dos regiones* disponibles en la Landing Zone: ~eu-south-2~ y ~us-east-1~.
