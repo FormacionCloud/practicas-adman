@@ -367,7 +367,7 @@ Los recursos que se crearán son:
   - Perfil de la instancia - Referencia al que creará la plantilla como recurso adicional
   - `UserData` - Script de inicio que configurará los *helper scripts* de CloudFormation
 -   **Perfil de la instancia** - Para asociar un rol de ejecución a la instancia (en el caso de Academy, `LabRole`)
--   **Grupo de seguridad** - Permite la conexión por:
+- **Grupo de seguridad** - Permite la conexión por:
   - SSH - Desde el rango de IPs indicado en el parámetro `SSHLocation`
   - HTTP - Desde cualquier IP
 
