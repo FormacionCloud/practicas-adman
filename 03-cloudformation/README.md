@@ -465,14 +465,14 @@ En nuestro caso, ejecutaremos dicho script en **dos situaciones**:
 Tienes más detalles sobre dichos scripts en <https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-helper-scripts-reference.html>
 
 ## Tareas propuestas
-- Desplegar una actualización del stack **cambiando el tipo de instancia**. ¿Qué ocurre? ¿Se reemplaza o se apaga y se vuelve a conectar? (Básico)
-- Realizar una modificación de la sección `Metadata` de la plantilla, creando un **archivo nuevo con tu nombre y apellidos** y comprobar que se crea automáticamente en la instancia cuando se sube de nuevo para actualizar el stack. (Básico)
-- Modificar la plantilla para añadir una **base de datos en RDS** y conectarla mediante **helper scripts** a la máquina EC2. (Avanzado)
-- Sobre esta última opción, añadir una configuración a la plantilla para realizar una copia de seguridad de la base de datos antes de eliminarse (Avanzado).
+- Desplegar una actualización del stack **cambiando el tipo de instancia**. ¿Qué ocurre? ¿Se reemplaza o se apaga y se vuelve a conectar?
+- Realizar una modificación de la sección `Metadata` de la plantilla, creando un **archivo nuevo con tu nombre y apellidos** y comprobar que se crea automáticamente en la instancia cuando se sube de nuevo para actualizar el stack.
+- Modificar la plantilla para añadir una **base de datos en RDS** y conectarla mediante **helper scripts** a la máquina EC2. (Opcional)
+- Sobre esta última opción, añadir una configuración a la plantilla para realizar una copia de seguridad de la base de datos antes de eliminarse (Opcional).
 
 
 ## Entrega
 Documenta la realización de la práctica explicando los pasos seguidos. Incluye las **capturas de pantalla** necesarias. Recuerda mostrar tus datos personales (nombre y apellidos y/o iniciales) en aquellos apartados donde se indique.
 
 ## Limpieza
-Al finalizar, **elimina los recursos creados** en la práctica ** eliminando el stack** creado.
+Al finalizar, **elimina los recursos creados** en la práctica **eliminando el stack** creado.
