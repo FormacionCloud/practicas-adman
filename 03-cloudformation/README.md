@@ -11,7 +11,7 @@ Haremos uso de las siguientes características de CloudFormation:
 
 ## Plantilla
 
-La plantilla puedes consultarla en el fichero [template-cf-metadata.yml](./practica-cf-metadata/template-cf-metadata.yml) de este repositorio.
+La plantilla puedes consultarla en el fichero [template-cf-metadata.yml](./template-cf-metadata.yml) de este repositorio.
 
 <details> <summary> Pulsa para ver el contenido del fichero </summary>
 
