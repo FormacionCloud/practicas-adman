@@ -1,7 +1,9 @@
 # Servidor web con base de datos en CloudFormation
 
 ## Introducción
-Esta práctica la realizaremos en la **Landing Zone**. Desplegaremos una infraestructura sencilla, basada en una máquina EC2 y una base de datos instalada en la misma máquina. La plantilla no solamente creará los recursos, sino que realizará la **conexión** de la aplicación y la base de datos.
+Esta práctica la realizaremos en el **Learner Lab**.
+
+Desplegaremos una infraestructura sencilla, basada en una máquina EC2 y una base de datos instalada en la misma máquina. La plantilla no solamente creará los recursos, sino que realizará la **conexión** de la aplicación y la base de datos.
 
 Haremos uso de las siguientes características de CloudFormation:
 
