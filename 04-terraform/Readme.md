@@ -11,7 +11,13 @@ En esta práctica construiremos desde cero una infraestructura en AWS usando Ter
 ## 1. Preparativos previos
 En primer lugar, instalaremos terraform en el equipo: https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli
 
-A continuación, clona el repositorio en tu equipo mediante `git`. Una vez clonado, accede a la carpeta del repositorio y a la carpeta `04-terraform` en un terminal. Puedes utilizar Visual Studio Code, abrir la carpeta del proyecto y abrir un terminal en el propio IDE.
+En segundo lugar, configura las credenciales de la Landing Zone. Puedes utilizar cualquiera de los métodos indicados en las instrucciones. Quizá el más sencillo sea la utilización de **variables de entorno**. Para ello, elige el sistema operativo y ejecuta el comando correspondiente:
+
+![Credenciales Landing Zone](./imagenes/credenciales_landing_zone.png)
+
+Otra opción es configurar el fichero `~/.aws/credentials~` con los datos indicados. Recuerda que en este caso debes también indicar la región por defecto en el fichero `~/.aws/config`.
+
+A continuación, clona el repositorio en tu equipo mediante `git`. Una vez clonado, accede a la carpeta del repositorio y a la carpeta `04-terraform` en un terminal. Puedes utilizar **Visual Studio Code**, abrir la carpeta del proyecto y abrir un terminal en el propio IDE.
 
 ```bash
 cd practicas-adman/04-terraform
