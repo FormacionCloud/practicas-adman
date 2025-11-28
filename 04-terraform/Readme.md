@@ -1,12 +1,12 @@
 # Terraform en AWS – Infraestructura para aplicación web
 
+> [!IMPORTANT]
+> Realizaremos esta práctica en la **Landing Zone**
+
 En esta práctica construiremos desde cero una infraestructura en AWS usando Terraform. Desplegaremos una aplicación web (WordPress) de **alta disponibilidad** con una arquitectura de **dos niveles**: servidores web EC2 en múltiples zonas, un balanceador de carga, base de datos gestionada (Amazon RDS) y un sistema de archivos compartido (Amazon EFS) que contendrá tanto código como *assets*, entre otros elementos. A lo largo del proceso, reforzaremos conceptos claves de Terraform (proveedores, recursos, variables, estado, etc.) y de AWS (VPC, subredes, **grupos de seguridad**, **roles IAM**, autoescalado, balanceador de carga, EC2, RDS, user-data, etc.), y tareas extra para resolver.
 
 ![Arquitectura final](./imagenes/infraestructura_final.jpg)
 
-
-> [!IMPORTANT]
-> Realizaremos esta práctica en la **Landing Zone**
 
 ## 1. Comprobar la estructura del proyecto
 
