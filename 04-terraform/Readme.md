@@ -8,19 +8,16 @@ En esta práctica construiremos desde cero una infraestructura en AWS usando Ter
 ![Arquitectura final](./imagenes/infraestructura_final.jpg)
 
 
-## 1. Comprobar la estructura del proyecto
+## 1. Preparativos previos
+En primer lugar, instalaremos terraform en el equipo: https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli
 
-Empezaremos creando la estructura de archivos y directorios para nuestro proyecto Terraform.  En Cloud9, abre una nueva terminal y ejecuta:
+A continuación, clona el repositorio en tu equipo mediante `git`. Una vez clonado, accede a la carpeta del repositorio y a la carpeta `04-terraform` en un terminal. Puedes utilizar Visual Studio Code, abrir la carpeta del proyecto y abrir un terminal en el propio IDE.
 
 ```bash
-# 1. Haz un pull del repositorio de la formación para tener los últimos cambios
-(normalmente desde la interfaz de Cloud9)
-
-# 2. Entra en la carpeta practica-terraform-aws del repositorio
-cd practica-terraform-aws
+cd practicas-adman/04-terraform
 ```
 
-Comprueba que ahora tienes un proyecto con esta estructura
+Comprueba que ahora tienes un proyecto con esta estructura:
 
 ```bash
 $ tree
@@ -38,7 +35,7 @@ $ tree
 
 Tener archivos separados por funcionalidad ayuda a que Terraform las cargue de forma organizada y a que los cambios sean más manejables. *(Terraform carga automáticamente todos los `.tf` en el directorio, sin importar el nombre, y fusiona la configuración.)*.  Observa que en `providers.tf` definimos el **proveedor de AWS** que usaremos con versiones mínimas para evitar problemas de sintaxis. También puedes ir revisando el resto de archivos, aunque los trataremos de forma separada.
 
-Ahora inicia el proyecto el Terraform
+A continuación, inicia el proyecto de Terraform:
 
 ```bash
 terraform init
@@ -59,7 +56,7 @@ Ahora ya estamos listos para ir desglosando la infraestructura.
 
 ## 2. Variables de entrada (variables.tf)
 
-Las **variables** en Terraform nos permiten hacer reusable y configurable la infraestructura, en lugar de hardcodear valores en el código. Así, aspectos como región, identificadores, tamaños, contraseñas, etc., podemos modificarlos fácilmente sin tocar la lógica principal. Observa que además definimos un prefijo de proyecto "tfaws" para que todos los recursos creados tengan esa nomenclatura.
+Las **variables** en Terraform nos permiten hacer reusable y configurable la infraestructura, en lugar de almacenar valores en el código, lo que se considera una mala práctica. Así, aspectos como región, identificadores, tamaños, contraseñas, etc., podemos modificarlos fácilmente sin tocar la lógica principal. Observa que además definimos un prefijo de proyecto `tfaws` para que todos los recursos creados tengan esa nomenclatura.
 
 <details>
 
@@ -72,69 +69,69 @@ Pulsa para ver el contenido del fichero
 # Región de AWS donde desplegar la infraestructura (por defecto us-east-1)
 
 variable "aws_region" {
-description = "Región de AWS donde se desplegarán los recursos"
-type = string
-default = "us-east-1"
+  description = "Región de AWS donde se desplegarán los recursos"
+  type        = string
+  default     = "us-east-1"
 }
 
-# Prefijo para nombres de recursos (por ejemplo, usar tus iniciales o proyecto)
+# Prefijo para nombres de recursos (por ejemplo, usar tus iniciales oproyecto)
 variable "project_name" {
-description = "Prefijo identificador para nombres de recursos en AWS"
-type = string
-default = "tfaws"
+  description = "Prefijo identificador para nombres de recursos en AWS"
+  type        = string
+  default     = "tfaws"
 }
 
 # VPC CIDR principal
 variable "vpc_cidr" {
-description = "Bloque CIDR para la VPC"
-type = string
-default = "10.0.0.0/16"
+  description = "Bloque CIDR para la VPC"
+  type        = string
+  default     = "10.0.0.0/16"
 }
 
 # Subredes públicas (lista de CIDR, una por zona de disponibilidad)
 variable "public_subnets_cidrs" {
-description = "Lista de bloques CIDR para subredes públicas"
-type = list(string)
-default = ["10.0.1.0/24", "10.0.2.0/24"]
+  description = "Lista de bloques CIDR para subredes públicas"
+  type        = list(string)
+  default     = ["10.0.1.0/24", "10.0.2.0/24"]
 }
 
 # Subredes privadas (para base de datos/servidores privados)
 variable "private_subnets_cidrs" {
-description = "Lista de bloques CIDR para subredes privadas"
-type = list(string)
-default = ["10.0.101.0/24", "10.0.102.0/24"]
+  description = "Lista de bloques CIDR para subredes privadas"
+  type        = list(string)
+  default     = ["10.0.101.0/24", "10.0.102.0/24"]
 }
 
 # Nombre de par de claves SSH existente (opcional, si se desea acceso SSH a instancia)
 variable "key_name" {
-description = "Nombre de la key pair de EC2 para SSH"
-type = string
-default = "" # dejar vacío si no se usará SSH manual
+  description = "Nombre de la key pair de EC2 para SSH"
+  type        = string
+  default     = "" # dejar vacío si no se usará SSH manual
 }
 
 # Tipo de instancia EC2 para los servidores web
 variable "instance_type" {
-description = "Tipo de instancia EC2 para los servidores web"
-type = string
-default = "t3.micro"
+  description = "Tipo de instancia EC2 para los servidores web"
+  type        = string
+  default     = "t3.micro"
 }
 
 # Parámetros para la base de datos (RDS MySQL)
 variable "db_name" {
-description = "Nombre de la base de datos de WordPress en RDS"
-type = string
-default = "wordpress"
+  description = "Nombre de la base de datos de WordPress en RDS"
+  type        = string
+  default     = "wordpress"
 }
 variable "db_username" {
-description = "Usuario administrador de la base de datos RDS"
-type = string
-default = "admin"
+  description = "Usuario administrador de la base de datos RDS"
+  type        = string
+  default     = "admin"
 }
 variable "db_password" {
-description = "Contraseña del usuario de la base de datos RDS"
-type = string
-default = "PAssw0rd1234" # En entorno real, usar una contraseña segura y no hardcodeada
-sensitive = true # Marcar como sensible para no mostrar en salida de Terraform
+  description = "Contraseña del usuario de la base de datos RDS"
+  type        = string
+  default     = "PAssw0rd1234" # En entorno real, usar una contraseña segura y no hardcodeada
+  sensitive   = true           # Marcar como sensible para no mostrar en salida de Terraform
 }
 
 variable "DOMAIN_NAME" {
@@ -153,7 +150,7 @@ variable "DEMO_PASSWORD" {
   type        = string
   description = "Contraseña administrador para WordPress"
   default     = "wppassword123"
-  sensitive = true # Marcar como sensible para no mostrar en salida de Terraform
+  sensitive   = true # Marcar como sensible para no mostrar en salida de Terraform
 }
 
 variable "DEMO_EMAIL" {
@@ -167,7 +164,7 @@ variable "DEMO_EMAIL" {
 
 Repasemos estas variables:
 
-- **aws_region:** región AWS donde trabajaremos. Por defecto `us-east-1`. Puedes cambiarlo a `us-west-2` si prefieres, pero asegúrate de usar la misma región en todos los recursos.
+- **aws_region:** región AWS donde trabajaremos. Por defecto `us-east-1`. Puedes cambiarlo a `eu-south-2` si prefieres, pero asegúrate de usar la misma región en todos los recursos.
 - **project_name:** un identificador para tus recursos (se usará en los nombres para distinguirlos, útil en entornos compartidos o para evitar colisiones), se pueden poner sólo letras y números, no espacios.
 - **vpc_cidr:** bloque de direcciones IP para la red VPC. Usamos un /16 (`10.0.0.0/16`) típico por sencillez.
 - **public_subnets_cidrs / private_subnets_cidrs:** listas de CIDR para dos subredes públicas y dos privadas, respectivamente. Hemos elegido subredes `/24` por comodidad. Cada subred estará en una Zona de Disponibilidad distinta (usaremos dos AZs para alta disponibilidad).
@@ -177,7 +174,7 @@ Repasemos estas variables:
 - **DOMAIN NAME, DEMO_USERNAME, DEMO_PASSWORD, DEMO_EMAIL:** credenciales para instalación de Wordpress. De nuevo en producción se deben gestionar mejor estos datos, sobre todo la password: por sencillez sólo ponemos la contraseña como `sensitive = true` como en el caso anterior
 
 > [!NOTE]
-> **Observa:** ¿Por qué parametrizar estos valores? Usando variables podemos reutilizar nuestro código Terraform en distintos entornos (dev, prod, regiones diferentes) simplemente cambiando los valores de entrada, sin duplicar código. Por ejemplo, podríamos desplegar la misma infraestructura en *us-west-2* pasando `-var="aws_region=us-west-2"` al aplicar, o aumentar el tamaño de instancias cambiando `instance_type` a un valor mayor según la carga. Las variables hacen nuestra infraestructura más **flexible y modulable**.
+> **Observa:** ¿Por qué parametrizar estos valores? Usando variables podemos reutilizar nuestro código Terraform en distintos entornos (dev, prod, regiones diferentes) simplemente cambiando los valores de entrada, sin duplicar código. Por ejemplo, podríamos desplegar la misma infraestructura en *eu-south-2* pasando `-var="aws_region=eu-south-2"` al aplicar, o aumentar el tamaño de instancias cambiando `instance_type` a un valor mayor según la carga. Las variables hacen nuestra infraestructura más **flexible y modulable**.
 
 Ahora que las variables están definidas, Terraform reconocerá estos valores con sus defaults. Siempre podríamos sobreescribirlos utilizando un archivo `.tfvars` o la línea de comandos, de ser necesario.
 
@@ -376,7 +373,7 @@ La creación es sencilla, pero aquí hemos usado características típicas de c�
 
 ### NAT Gateway (acceso de salida para subredes privadas)
 
-Como hemos comentado, un **NAT Gateway** permite a instancias en subredes privadas salir a Internet usando una IP pública compartida, sin exponer directamente esas instancias. Esa IP debe ser fija, por lo que aparte del propio NAT Gateway necesitaremos dar de alta una IP elástica (así es como llama AWS a las IPs fijas). 
+Como hemos comentado, un **NAT Gateway** permite a instancias en subredes privadas salir a Internet usando una IP pública compartida, sin exponer directamente esas instancias. Esa IP debe ser fija, por lo que aparte del propio NAT Gateway necesitaremos dar de alta una IP elástica. 
 
 El código está disponible en el fichero `red.tf`.
 
@@ -428,14 +425,14 @@ Opcional: puedes verificar lo que hemos visto hasta ahora, ejecutando un **plan*
 terraform plan -target=aws_vpc.main_vpc -target=aws_subnet.public -target=aws_subnet.private -target=aws_nat_gateway.nat
 ```
 
-## 5. Crear recursos de seguridad (cortafuegos)
+## 5. Crear recursos de seguridad
 
 En esta arquitectura sencilla, sólo crearemos cortafuegos de entrada/salida con estado, que funcionan a nivel de interfaz de red para instancias, base de datos y balanceador de carga: los **grupos de seguridad**. En arquitecturas más detalladas, se podrían añadir elementos como *Web Application Firewalls* (*WAFs*) o *NACLS* (cortafuegos sin estado para regular el tráfico entre subredes, principalmente), pero aquí lo dejaremos sencillo, su uso realizando **encadenamiento de grupos de seguridad** es bastante robusto:
 
-- **SG del balanceador de carga (ALB)** – Permitirá tráfico web desde Internet hacia el ALB y encadenará con el de las instancias EC2 de aplicación web.  
-- **SG de los servidores web (EC2)** – Controlará el tráfico desde/hacia los servidores de la aplicación. Como punto central de la infraestructura, encadenará con el anterior, con el de la base de datos y con el del volumen EFS. 
-- **SG de la base de datos (RDS)** – Al encadenar con el anterior, permitirá sólo las conexiones desde los servidores web al puerto MySQL (3306) de la base de datos.  
-- **SG de EFS** – Igualmente, al encadenar con el de los servidores EC2, permitirá que sólo estos se conecten al volumen EFS (protocolo NFS, puerto 2049).  
+- **SG del balanceador de carga (ALB)** – Permitirá tráfico web desde Internet hacia el ALB y encadenará con el de las instancias EC2 de aplicación web.
+- **SG de los servidores web (EC2)** – Controlará el tráfico desde/hacia los servidores de la aplicación. Como punto central de la infraestructura, encadenará con el anterior, con el de la base de datos y con el del volumen EFS.
+- **SG de la base de datos (RDS)** – Al encadenar con el anterior, permitirá sólo las conexiones desde los servidores web al puerto MySQL (3306) de la base de datos.
+- **SG de EFS** – Igualmente, al encadenar con el de los servidores EC2, permitirá que sólo estos se conecten al volumen EFS (protocolo NFS, puerto 2049).
 
 ![Cortafuegos](./imagenes/seguridad.jpg)
 
@@ -450,110 +447,111 @@ Pulsa para ver el contenido del fichero
 ```hcl
 # SG para el Load Balancer - permite tráfico web desde internet
 resource "aws_security_group" "alb_sg" {
-name = "${var.project_name}-alb-sg"
-description = "Permitir HTTP desde Internet al ALB"
-vpc_id = aws_vpc.main_vpc.id
+  name        = "${var.project_name}-alb-sg"
+  description = "Permitir HTTP desde Internet al ALB"
+  vpc_id      = aws_vpc.main_vpc.id
 
-# Regla de entrada: HTTP (80)  desde cualquier origen
-ingress {
-  description = "HTTP desde Internet"
-  from_port   = 80
-  to_port     = 80
-  protocol    = "tcp"
-  cidr_blocks = ["0.0.0.0/0"]
-}
+  # Regla de entrada: HTTP (80)  desde cualquier origen
+  ingress {
+    description = "HTTP desde Internet"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 
-# Salida: permitir todo (regla default implícita de SG)
-egress {
-from_port = 0
-to_port = 0
-protocol = "-1"
-cidr_blocks = ["0.0.0.0/0"]
-description = "Allow all outbound"
-}
 
-tags = {
-Name = "${var.project_name}-alb-sg"
-}
+  # Salida: permitir todo (regla default implícita de SG)
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "Allow all outbound"
+  }
+
+  tags = {
+    Name = "${var.project_name}-alb-sg"
+  }
 }
 
 # SG para las instancias EC2 (servidores web)
 resource "aws_security_group" "web_sg" {
-name = "${var.project_name}-web-sg"
-description = "Permitir acceso al servidor web desde ALB"
-vpc_id = aws_vpc.main_vpc.id
+  name        = "${var.project_name}-web-sg"
+  description = "Permitir acceso al servidor web desde ALB"
+  vpc_id      = aws_vpc.main_vpc.id
 
-ingress {
-description = "HTTP desde el ALB"
-from_port = 80
-to_port = 80
-protocol = "tcp"
-security_groups = [aws_security_group.alb_sg.id] # permitido desde SG del ALB
-}
+  ingress {
+    description     = "HTTP desde el ALB"
+    from_port       = 80
+    to_port         = 80
+    protocol        = "tcp"
+    security_groups = [aws_security_group.alb_sg.id] # permitido desde SG del ALB
+  }
 
-egress {
-from_port = 0
-to_port = 0
-protocol = "-1"
-cidr_blocks = ["0.0.0.0/0"]
-description = "Allow all outbound"
-}
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "Allow all outbound"
+  }
 
-tags = {
-Name = "${var.project_name}-web-sg"
-}
+  tags = {
+    Name = "${var.project_name}-web-sg"
+  }
 }
 
 # SG para la base de datos (RDS)
 resource "aws_security_group" "db_sg" {
-name = "${var.project_name}-db-sg"
-description = "Permitir acceso MySQL desde servidores web"
-vpc_id = aws_vpc.main_vpc.id
+  name        = "${var.project_name}-db-sg"
+  description = "Permitir acceso MySQL desde servidores web"
+  vpc_id      = aws_vpc.main_vpc.id
 
-ingress {
-description = "MySQL desde Web SG"
-from_port = 3306
-to_port = 3306
-protocol = "tcp"
-security_groups = [aws_security_group.web_sg.id] # solo desde instancias con web_sg
-}
+  ingress {
+    description     = "MySQL desde Web SG"
+    from_port       = 3306
+    to_port         = 3306
+    protocol        = "tcp"
+    security_groups = [aws_security_group.web_sg.id] # solo desde instancias con web_sg
+  }
 
-egress {
-from_port = 0
-to_port = 0
-protocol = "-1"
-cidr_blocks = ["0.0.0.0/0"]
-}
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 
-tags = {
-Name = "${var.project_name}-db-sg"
-}
+  tags = {
+    Name = "${var.project_name}-db-sg"
+  }
 }
 
 # SG para EFS (sistema de archivos)
 resource "aws_security_group" "efs_sg" {
-name = "${var.project_name}-efs-sg"
-description = "Permitir acceso NFS (EFS) desde servidores web"
-vpc_id = aws_vpc.main_vpc.id
-ingress {
-description = "NFS desde Web SG"
-from_port = 2049
-to_port = 2049
-protocol = "tcp"
-security_groups = [aws_security_group.web_sg.id]
-}
+  name        = "${var.project_name}-efs-sg"
+  description = "Permitir acceso NFS (EFS) desde servidores web"
+  vpc_id      = aws_vpc.main_vpc.id
+  ingress {
+    description     = "NFS desde Web SG"
+    from_port       = 2049
+    to_port         = 2049
+    protocol        = "tcp"
+    security_groups = [aws_security_group.web_sg.id]
+  }
 
-egress {
-from_port = 0
-to_port = 0
-protocol = "-1"
-cidr_blocks = ["0.0.0.0/0"]
-}
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 
 
-tags = {
-Name = "${var.project_name}-efs-sg"
-}
+  tags = {
+    Name = "${var.project_name}-efs-sg"
+  }
 }
 ```
 
@@ -561,10 +559,10 @@ Name = "${var.project_name}-efs-sg"
 
 Con estos grupos de seguridad, hemos implementado el *principio de mínimo privilegio*: cada componente tiene permiso sólo para lo necesario. De este modo, controlamos el flujo de tráfico entre las capas:
 
-- Internet -> ALB (80) [permitido]  
-- ALB -> Servidores Web (80) [permitido]  
-- Servidores Web -> RDS (3306) [permitido]  
-- Servidores Web -> EFS (2049) [permitido]  
+- Internet -> ALB (80) [permitido]
+- ALB -> Servidores Web (80) [permitido]
+- Servidores Web -> RDS (3306) [permitido]
+- Servidores Web -> EFS (2049) [permitido]
 - Cualquier otro patrón (por ejemplo Internet -> servidores web directamente, o Internet -> RDS, etc.) está *denegado*, porque no definimos reglas para ello en los SG. Hay que recordar que dado que son cortafuegos con estado, por ejemplo, si los servidores web inician una conexión hacia RDS en 3306, la respuesta de RDS a web *también* será permitida, independientemente de las reglas: no necesitamos una regla separada para el tráfico de respuesta. 
 
 Si quieres puedes ejecutar `terraform plan` para ver el plan completo hasta ahora o  `terraform validate` para asegurarte de que la sintaxis es correcta y todas las referencias coinciden. 
@@ -573,9 +571,9 @@ Si quieres puedes ejecutar `terraform plan` para ver el plan completo hasta ahor
 
 Esta es la principal y última sección, donde completamos la arquitectura definiendo las capas de computación y almacenamiento.
 
-- Un sistema de ficheros **EFS** para que los servidores web compartan el mismo almacenamiento (necesario para WordPress, así todos los nodos ven el mismo código, archivos subidos, plugins, etc.).  
-- Una base de datos **RDS (MySQL)** para el WordPress (posts, usuarios, etc.) como servicio gestionado.  
-- Un **Application Load Balancer (ALB)** para distribuir tráfico entre múltiples servidores web, con Target Groups y Listeners correspondientes.  
+- Un sistema de ficheros **EFS** para que los servidores web compartan el mismo almacenamiento (necesario para WordPress, así todos los nodos ven el mismo código, archivos subidos, plugins, etc.).
+- Una base de datos **RDS (MySQL)** para el WordPress (posts, usuarios, etc.) como servicio gestionado.
+- Un **Application Load Balancer (ALB)** para distribuir tráfico entre múltiples servidores web, con Target Groups y Listeners correspondientes.
 - Un **Auto Scaling Group** (ASG) de instancias **EC2** para los servidores web, utilizando una **Launch Template** con **user data** para instalar y configurar WordPress automáticamente en cada instancia.
 
 ![Arquitectura final](./imagenes/infraestructura_final.jpg)
@@ -599,20 +597,20 @@ Pulsa para ver el contenido del fichero
 ```hcl
 # Sistema de archivos EFS
 resource "aws_efs_file_system" "wordpress_fs" {
-provisioned_throughput_in_mibps = 0
-throughput_mode = "bursting"
-encrypted = false
-tags = {
-Name = "${var.project_name}-efs"
-}
+  provisioned_throughput_in_mibps = 0
+  throughput_mode                 = "bursting"
+  encrypted                       = false
+  tags = {
+    Name = "${var.project_name}-efs"
+  }
 }
 
 # Crear un Mount Target de EFS en cada subred privada
 resource "aws_efs_mount_target" "efs_mount" {
-count = length(var.private_subnets_cidrs)
-file_system_id = aws_efs_file_system.wordpress_fs.id
-subnet_id = aws_subnet.private[count.index].id
-security_groups = [aws_security_group.efs_sg.id]
+  count           = length(var.private_subnets_cidrs)
+  file_system_id  = aws_efs_file_system.wordpress_fs.id
+  subnet_id       = aws_subnet.private[count.index].id
+  security_groups = [aws_security_group.efs_sg.id]
 }
 ```
 
@@ -641,11 +639,11 @@ Pulsa para ver el contenido del fichero
 ```hcl
 # Subnet Group para RDS (usar subredes privadas)
 resource "aws_db_subnet_group" "rds_subnets" {
-name = "${var.project_name}-rds-subnetgrp"
-subnet_ids = aws_subnet.private[*].id
-tags = {
-Name = "${var.project_name}-rds-subnetgrp"
-}
+  name = "${var.project_name}-rds-subnetgrp"
+  subnet_ids = aws_subnet.private[*].id
+  tags = {
+    Name = "${var.project_name}-rds-subnetgrp"
+  }
 }
 
 resource "aws_db_instance" "wordpress_db" {
@@ -709,46 +707,46 @@ Pulsa para ver el contenido del fichero
 ```hcl
 # Load Balancer (Application LB) público
 resource "aws_lb" "app_lb" {
-name = "${var.project_name}-alb"
-load_balancer_type = "application"
-subnets = aws_subnet.public[*].id # lo coloca en las subredes públicas
-security_groups = [aws_security_group.alb_sg.id]
-idle_timeout = 60
-enable_deletion_protection = false
-tags = {
-Name = "${var.project_name}-alb"
-}
+  name                       = "${var.project_name}-alb"
+  load_balancer_type         = "application"
+  subnets                    = aws_subnet.public[*].id # colocar en subredes públicas (una IP en cada AZ pública)
+  security_groups            = [aws_security_group.alb_sg.id]
+  idle_timeout               = 60
+  enable_deletion_protection = false
+  tags = {
+    Name = "${var.project_name}-alb"
+  }
 }
 
 # Target Group para los servidores web
 resource "aws_lb_target_group" "web_tg" {
-name = "${var.project_name}-tg"
-port = 80
-protocol = "HTTP"
-vpc_id = aws_vpc.main_vpc.id
-target_type = "instance"
-health_check {
-path = "/"
-protocol = "HTTP"
-interval = 30
-timeout = 5
-healthy_threshold = 3
-unhealthy_threshold = 3
-}
-tags = {
-Name = "${var.project_name}-tg"
-}
+  name        = "${var.project_name}-tg"
+  port        = 80
+  protocol    = "HTTP"
+  vpc_id      = aws_vpc.main_vpc.id
+  target_type = "instance"
+  health_check {
+    path                = "/"
+    protocol            = "HTTP"
+    interval            = 30
+    timeout             = 5
+    healthy_threshold   = 3
+    unhealthy_threshold = 3
+  }
+  tags = {
+    Name = "${var.project_name}-tg"
+  }
 }
 
 # Listener HTTP en el ALB (puerto 80 -> target group)
 resource "aws_lb_listener" "alb_listener_http" {
-load_balancer_arn = aws_lb.app_lb.arn
-port = 80
-protocol = "HTTP"
-default_action {
-type = "forward"
-target_group_arn = aws_lb_target_group.web_tg.arn
-}
+  load_balancer_arn = aws_lb.app_lb.arn
+  port              = 80
+  protocol          = "HTTP"
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.web_tg.arn
+  }
 }
 
 ```
@@ -865,56 +863,58 @@ data "aws_ssm_parameter" "amzn2" {
 
 # Launch Template para instancias web
 resource "aws_launch_template" "web_lt" {
-name_prefix = "${var.project_name}-lt-"
-image_id = data.aws_ssm_parameter.amzn2.value
-instance_type = var.instance_type
-key_name = var.key_name != "" ? var.key_name : null
-# Solo asignamos key pair si se proporcionó; si var.key_name es "", ponemos null (ninguna key)
-vpc_security_group_ids = [aws_security_group.web_sg.id]
-iam_instance_profile {
-  name = "LabInstanceProfile"
-}
-user_data = base64encode(templatefile("${path.module}/userdata/staging-web.sh", {
-  efs_id        = aws_efs_file_system.wordpress_fs.id
-  region        = var.aws_region
-  db_name       = var.db_name
-  db_username   = var.db_username
-  db_password   = var.db_password
-  db_host       = aws_db_instance.wordpress_db.address
-  DOMAIN_NAME   = var.DOMAIN_NAME
-  DEMO_USERNAME = var.DEMO_USERNAME
-  DEMO_PASSWORD = var.DEMO_PASSWORD
-  DEMO_EMAIL    = var.DEMO_EMAIL
-}))
-tag_specifications {
-resource_type = "instance"
-tags = {
-Name = "${var.project_name}-web"
-}
-}
+  name_prefix   = "${var.project_name}-lt-"
+  image_id      = data.aws_ssm_parameter.amzn2.value
+  instance_type = var.instance_type
+  key_name      = var.key_name != "" ? var.key_name : null
+  # Solo asignamos key pair si se proporcionó; si var.key_name es "", ponemos null (ninguna key)
+  vpc_security_group_ids = [aws_security_group.web_sg.id]
+  iam_instance_profile {
+    # name = "LabInstanceProfile"
+    name = aws_iam_instance_profile.web_profile.name
+  }
+  user_data = base64encode(templatefile("${path.module}/userdata/staging-web.sh", {
+    efs_id        = aws_efs_file_system.wordpress_fs.id
+    region        = var.aws_region
+    db_name       = var.db_name
+    db_username   = var.db_username
+    db_password   = var.db_password
+    db_host       = aws_db_instance.wordpress_db.address
+    DOMAIN_NAME   = var.DOMAIN_NAME
+    DEMO_USERNAME = var.DEMO_USERNAME
+    DEMO_PASSWORD = var.DEMO_PASSWORD
+    DEMO_EMAIL    = var.DEMO_EMAIL
+  }))
+  tag_specifications {
+    resource_type = "instance"
+    tags = {
+      Name = "${var.project_name}-web"
+    }
+  }
 }
 
 # Auto Scaling Group para las instancias web
 resource "aws_autoscaling_group" "web_asg" {
-name_prefix = "${var.project_name}-asg-"
-launch_template {
-id = aws_launch_template.web_lt.id
-version = "$Latest"
-}
-vpc_zone_identifier = aws_subnet.private[*].id
-target_group_arns = [aws_lb_target_group.web_tg.arn]
-desired_capacity = 1
+  name_prefix = "${var.project_name}-asg-"
+  launch_template {
+    id      = aws_launch_template.web_lt.id
+    version = "$Latest"
+  }
+  vpc_zone_identifier = aws_subnet.private[*].id
+  target_group_arns   = [aws_lb_target_group.web_tg.arn]
+  desired_capacity    = 1
 
-min_size = 1
-max_size = 2
-health_check_type = "EC2"
-health_check_grace_period = 90
-tag {
-key = "Name"
-value = "${var.project_name}-web"
-propagate_at_launch = true
+  min_size                  = 1
+  max_size                  = 2
+  health_check_type         = "EC2"
+  health_check_grace_period = 90
+  tag {
+    key                 = "Name"
+    value               = "${var.project_name}-web"
+    propagate_at_launch = true
+  }
 }
-}
+
 ```
 
 </details>
@@ -968,16 +968,16 @@ Antes de lanzar la infraestructura, es interesante crear un archivo de *outputs*
 
 ```hcl
 output "alb_dns_name" {
-description = "DNS público del Application Load Balancer"
-value = aws_lb.app_lb.dns_name
+  description = "DNS público del Application Load Balancer"
+  value = aws_lb.app_lb.dns_name
 }
 output "wordpress_url" {
-description = "URL para acceder a la aplicación WordPress"
-value = "http://${aws_lb.app_lb.dns_name}"
+  description = "URL para acceder a la aplicación WordPress"
+  value = "http://${aws_lb.app_lb.dns_name}"
 }
 output "rds_endpoint" {
-description = "Endpoint (DNS) de la base de datos RDS"
-value = aws_db_instance.wordpress_db.address
+  description = "Endpoint (DNS) de la base de datos RDS"
+  value = aws_db_instance.wordpress_db.address
 }
 ```
 
