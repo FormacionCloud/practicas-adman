@@ -1030,9 +1030,19 @@ En la misma línea, podemos usar comandos Terraform para consultar la infraestru
 - `terraform state list` listará todos los recursos conocidos.
 - `terraform state show aws_db_instance.wordpress_db` mostrará detalles específicos de ese recurso concreto. 
 
-## 9. Limpieza: destruir la infraestructura
 
-Al terminar el ejercicio y sus extras, es importante **eliminar los recursos** para no seguir consumiendo créditos, ten en cuenta que aunque a las 4 horas las máquinas RDS se paran, el ALB y **sobre todo la instancia RDS no, seguirá consumiendo**. 
+## 9. Tareas propuestas
+Realiza las **modificaciones** necesarias en el código propuesto para realizar las siguientes tareas:
+- Modificar el **prefijo** definido en el archivo de variables para que incluya tu **NOMBRE y APELLIDOS**.
+- Desplegar una actualización de la infraestructura añadiendo **dos instancias** como valor deseado en el **grupo de autoescalado**.
+- Modificar la **base de datos RDS** para que implemente una configuración de **Despliegue Multi-AZ**. Fuente: https://registry.terraform.io/modules/terraform-aws-modules/rds/aws/latest. Nota: la aplicación de los cambios puede realizarse inmediatamente o durante la ventana de mantenimiento. Añade la línea necesaria para **aplicarlos inmediatamente**.
+
+Comprueba que efectivamente ahora tenemos Alta Disponibilidad, al tener recursos de aplicación web y de base de datos en dos AZs.
+
+**Documenta** la realización de la práctica explicando los pasos seguidos. Incluye las **capturas de pantalla** necesarias. Recuerda mostrar tus datos personales (nombre y apellidos y/o iniciales) en aquellos apartados donde se indique.
+
+## 10. Limpieza: destruir la infraestructura
+Al terminar el ejercicio es importante **eliminar los recursos** para no seguir incurriendo en gastos en la Landing Zone.
 
 Terraform hace fácil la destrucción de todo lo que hemos creado, con `terraform destroy`: este comando lee el estado y genera un plan inverso: destrucción de cada recurso en el orden correcto, respetando dependencias (por ejemplo, desmontar otros recursos primero y dejar destrucción de VPC para el final). 
 
@@ -1043,5 +1053,3 @@ terraform destroy
 ```
 
 Una vez completado, Terraform indicará algo como "Destroy complete! Resources: xxx destroyed." 
-
-
