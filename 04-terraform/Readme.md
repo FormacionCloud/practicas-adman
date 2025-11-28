@@ -1,4 +1,4 @@
-# Terraform en AWS – Infraestructura para aplicación web
+# Infraestructura para aplicación web en Terraform
 
 > [!IMPORTANT]
 > Realizaremos esta práctica en la **Landing Zone**
