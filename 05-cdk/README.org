@@ -16,11 +16,6 @@ Deberemos clonar el repositorio en CloudShell mediante el siguiente comando:
 git clone https://github.com/FormacionCloud/practicas-adman.git 
 #+end_src
 
-Si es la primera vez que utilizas ~cdk~ en la cuenta, ejecuta el siguiente comando para realizar el [[https://docs.aws.amazon.com/cdk/v2/guide/bootstrapping.html][bootstraping]]:
-#+begin_src bash
-  cdk bootstrap
-#+end_src
-
 * Proyecto 1
 Este despliegue crea los siguientes recursos en AWS:
 - *VPC personalizada* con CIDR ~10.0.0.0/16~
@@ -40,6 +35,11 @@ Este despliegue crea los siguientes recursos en AWS:
 Accede a la carpeta del proyecto:
 #+begin_src bash
   cd practicas-adman/05-cdk/proyecto1
+#+end_src
+
+Si es la primera vez que utilizas ~cdk~ en la cuenta, ejecuta el siguiente comando para realizar el [[https://docs.aws.amazon.com/cdk/v2/guide/bootstrapping.html][bootstraping]]:
+#+begin_src bash
+  cdk bootstrap
 #+end_src
 
 A continuación, *instala las dependencias* y *compila* el proyecto:
