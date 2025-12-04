@@ -1,0 +1,101 @@
+* Despliegue de infraestructura con AWS CDK
+#+begin_quote
+[!important]
+Esta práctica la realizaremos en la *Landing Zone*. 
+#+end_quote
+
+En esta práctica realizaremos *dos despliegues* mediante AWS CDK. En el repositorio verás que hay dos carpetas para cada uno de los proyectos de despliegue:
+1. En la carpeta ~proyecto1~ desplegaremos una máquina virtual EC2 con una pila LAMP en una VPC. Para ello utilizaremos *constructos de bajo nivel*, que se corresponden con *recursos de CloudFormation*.
+2. En la carpeta ~proyecto2~ desplegaremos una infraestructura basada en un balanceador de carga y un grupo de autoescalado. Para ello utilizaremos *constructos de alto nivel*, que simplifican la creación de infraestructuras complejas aplicando valores por defecto y creando *recursos implícitos* sin necesidad de indicarlo en el código.
+
+* Preparación previa
+Para evitar instalar todas las dependencias en nuestro equipo, utilizaremos el servicio *CloudShell* de AWS, que ya incorpora los comandos ~git~, ~npm~, ~aws~ y ~cdk~.
+
+Deberemos clonar el repositorio en CloudShell mediante el siguiente comando:
+#+begin_src bash
+git clone https://github.com/FormacionCloud/practicas-adman.git 
+#+end_src
+
+* Proyecto 1
+Este despliegue crea los siguientes recursos en AWS:
+- *VPC personalizada* con CIDR ~10.0.0.0/16~
+- *Subred pública* en ~us-east-1a~ con CIDR ~10.0.0.0/24~
+- *Internet Gateway* con ruta por defecto ~0.0.0.0/0~
+- *Route Table* asociada a la subred
+- *Security Group* que permite:
+  - Entrada en puerto *22 (SSH)* desde ~0.0.0.0/0~
+  - Entrada en puerto *80 (HTTP)* desde ~0.0.0.0/0~
+- *Instancia EC2 t2.micro* con:
+  - AMI de *Amazon Linux 2023*
+  - IP pública
+  - *User Data* que instala una pila LAMP
+  - Archivo ~/var/www/html/index.php~ con ~phpinfo()~
+
+** Instrucciones
+Accede a la carpeta del proyecto:
+#+begin_src bash
+  cd practicas-adman/05-cdk/proyecto1
+#+end_src
+
+Si es la primera vez que utilizas ~cdk~ en la cuenta, ejecuta el siguiente comando para realizar el [[https://docs.aws.amazon.com/cdk/v2/guide/bootstrapping.html][bootstraping]]:
+#+begin_src bash
+  cdk bootstrap
+#+end_src
+
+A continuación, *instala las dependencias* y *compila* el proyecto:
+#+begin_src bash
+  npm install
+  npm run build
+#+end_src
+
+Por último, ejecuta el *despliegue*:
+#+begin_src bash
+  cdk deploy
+#+end_src
+
+** Comprobación del funcionamiento
+Observa que el comando devuelve una URL. Accede a dicha URL y *comprueba* que visualizas el sitio web.
+
+** Comprobación en CloudFormation
+Accede a [[https://console.aws.amazon.com/cloudformation/][CloudFormation]] en la consola. Observa el stack que se ha creado, junto con los recursos y eventos.
+
+** Análisis del código
+Observa el código del archivo almacenado en la carpeta ~lib~. Todos los recursos empiezan por el prefijo ~Cfn~. Estos constructos son constructos de *bajo nivel*, que se mapean directamente a *recursos de CloudFormation*. Así, este primer proyecto define *todos los recursos* de manera *explícita*. Lo que se crea es lo que se ve en el listado de recursos. Compruébalo en el listado de recursos de CloudFormation.
+
+** Detección de drift (desvío de configuración)
+- Ve a EC2 > Security Groups
+- Edita el grupo de seguridad de la instancia
+- Añade una regla inbound: ~All traffic~, origen ~0.0.0.0/0~
+
+Esto genera un *drift*, porque el estado real ya no coincide con lo que CDK desplegó.
+
+Para detectar el drift, realiza los siguientes pasos:
+- Accede a CloudFormation
+- Selecciona el stack
+- Selecciona ~Actions > Detect drift~
+
+Desde la CLI:
+#+begin_src bash
+aws cloudformation detect-stack-drift --stack-name CdkprojectStack
+#+end_src
+
+Y para consultar los resultados:
+#+begin_src bash
+  # Sustituye <id> por el identificador del drift obtenido en el paso anterior
+  aws cloudformation describe-stack-drift-detection-status --stack-drift-detection-id <id>
+#+end_src
+
+O bien desde la consola.
+
+Existe un comando adicional ~npx cdk diff~, que se encarga de comprobar las *diferencias entre la plantilla local y la desplegada en CloudFormation*. Es importante dejar claro que esas diferencias *no incluyen los cambios realizados de manera externa a la plantilla*, como el que nos aplica. A todos los efectos, CDK es igual a CloudFormation en este aspecto.
+
+De la misma manera que en CloudFormation, *CDK no reconcilia automáticamente el estado del recurso con la plantilla*. Si se detecta drift habrá que actuar del mismo modo que con CloudFormation:
+- CloudFormation lo indica en su detección.
+- Pero *no revierte los cambios manuales* a menos que se haga una actualización o recreación explícita, eliminando y volviendo a crear.
+- Habitualmente se suele derivar esto a un entorno de trabajo en el que AWS Config detecta cambios /non-compliance/ predefinidos que desencadenan acciones automáticas.
+
+* Entrega
+Documenta la realización de la práctica explicando los pasos seguidos. Incluye las *capturas de pantalla* necesarias. Recuerda mostrar tus datos personales (nombre y apellidos y/o iniciales) en aquellos apartados donde se indique.
+
+* Limpieza
+Al finalizar, *elimina los recursos creados* en la práctica. Para ello, ejecuta el comando ~cdk destroy~ desde cada una de las *dos carpetas* de proyecto utilizadas.
