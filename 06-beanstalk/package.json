@@ -1,0 +1,17 @@
+{
+  "name": "deploy_github_actions_sample",
+  "version": "1.0.0",
+  "description": "Ejemplo de aplicación NodeJS para desplegar en Beanstalk",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "Pedro Prieto",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "express": "^4.18.2",
+    "pug": "^3.0.2"
+  },
+  "devDependencies": {}
+}

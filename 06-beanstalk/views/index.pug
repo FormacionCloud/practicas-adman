@@ -1,0 +1,33 @@
+doctype html
+html
+  head
+    title Prueba de despliegue en Beanstalk
+    link(rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css")
+    meta(name="viewport" content="width=device-width, initial-scale=1")
+    script(defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js")
+  body
+    section.hero.is-info.is-medium.is-bold
+      div.hero-head
+        nav.navbar(role="navigation" aria-label="main navigation")
+          div.container
+            div.navbar-menu
+              div.navbar-end
+                div.tabs.is-right
+                  ul
+                    li(class={'is-active': greeting === 'Hola'})
+                      a.navbar-item(href="/") Home
+                    li(class={'is-active': greeting === 'Adiós'})
+                      a.navbar-item(href="/adios") Despedida
+      div.hero-body
+        div.container.has-text-centered
+          h1.title #{title}
+          p.subtitle #{greeting} #{data}
+
+    section.section
+      form.container
+        div.field
+          label.label.is-medium(for="data") Introduzca un nombre
+            div.control.has-icons-left
+              input.input.is-medium(type="text" name="data" placeholder="Nombre")
+              span.icon.is-small.is-left
+                i.fas.fa-user
