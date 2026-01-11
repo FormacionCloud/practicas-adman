@@ -15,9 +15,33 @@ Deberás crear *dos roles* (puedes hacerlo desde el propio asistente de Beanstal
 
 Como plataforma de aplicación, elige la última versión de *NodeJS*.
 
+En el apartado de infraestructura, selecciona una única máquina EC2.
+
 A la hora de seleccionar el código, elegiremos desplegar la *aplicación de prueba*.
 
+Por último, accede a la URL de la aplicación y comprueba que se muestra la aplicación de ejemplo de AWS.
+
+** Comprobación de la infraestructura creada por Beanstalk
+Accede a la consola de EC2. Comprueba que se ha creado una *máquina virtual* automáticamente. Dicha máquina estará gestionada por el servicio Beanstalk. De esta manera, solo deberemos preocuparnos del código de la aplicación: toda la *infraestructura* estará *gestionada* automáticamente por *AWS* a través de Beanstalk.
+
+Este es la función principal de Beanstalk: proporcionar un *nivel de abstracción superior* para simplificar el *despliegue de aplicaciones* en un modelo de *Plataforma como Servicio*.
+
 * Actualización del código a través de la consola de AWS
+En este apartado sustituiremos el código de la aplicación de ejemplo de AWS por la aplicación NodeJS de este repositorio.
+
+** Funcionamiento de la aplicación
+En primer lugar, inspecciona el archivo ~index.js~ incluido en la carpeta de proyecto del repositorio. Presta especial atención a la línea siguiente:
+
+#+begin_src js
+  // Puerto de escucha
+  var port = process.env.PORT || 3000;
+#+end_src
+
+Esa línea define el puerto de escucha de nuestra aplicación. Como puedes comprobar, la variable ~port~ almacenará el valor de ~process.env.PORT~, que hace referencia a la *variable de entorno* ~PORT~ definida en el entorno de Beanstalk, de acuerdo con la [[https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/create_deploy_nodejs.container.html#nodejs-platform-console][documentación oficial]]; si no existiera dicha variable, utilizaría el puerto 3000 (útil para testeo de la aplicación en equipo local, fuera del entorno de Beanstalk).
+
+Al crear la infraestructura necesaria para la aplicación web, Beanstalk redirigirá el tráfico de la URL de la aplicación a un puerto específico de la máquina EC2 que sirva el tráfico. Dicho puerto es referenciado por esa variable de entorno.
+
+** Descarga y actualización del código de manera manual
 Clona el repositorio en tu equipo de trabajo si no lo has hecho ya. Accede a la carpeta del proyecto (~practicas-adman/06-beanstalk~) y comprime el contenido de dicha carpeta.
 
 #+begin_quote
