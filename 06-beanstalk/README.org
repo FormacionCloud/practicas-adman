@@ -145,6 +145,8 @@ Accede a la URL de la aplicación y pulsa en el enlace con texto *Parámetro de 
 Parece que es un problema de permisos, ¿verdad? Recuerda que hemos creado dos roles en esta práctica. ¿Crees que alguno de ellos está relacionado con este tema?
 
 Recuerda también que el código de la aplicación se está ejecutando desde una máquina EC2.
+
+Por último, si haces algún cambio, espera algo de tiempo hasta que se propaguen los cambios y las cachés se refresquen.
 #+end_quote
 
 * Eliminación del entorno de Beanstalk
