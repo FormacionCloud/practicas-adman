@@ -35,6 +35,8 @@ Para terminar, pasados unos minutos, cuando el entorno esté en estado *Healthy*
 ** Comprobación de la infraestructura creada por Beanstalk
 Accede a la consola de EC2. Comprueba que se ha creado una *máquina virtual* automáticamente. Dicha máquina estará gestionada por el servicio Beanstalk. De esta manera, solo deberemos preocuparnos del código de la aplicación: toda la *infraestructura* estará *gestionada* automáticamente por *AWS* a través de Beanstalk.
 
+[[./imagenes/09.png]]
+
 Este es la función principal de Beanstalk: proporcionar un *nivel de abstracción superior* para simplificar el *despliegue de aplicaciones* en un modelo de *Plataforma como Servicio*.
 
 * Actualización del código a través de la consola de AWS
@@ -65,7 +67,13 @@ Clona el repositorio en tu equipo de trabajo si no lo has hecho ya. Accede a la 
 Recuerda que debes comprimir el *contenido de la carpeta* ~practicas-adman/06-beanstalk~, no la carpeta en sí. En la raíz del ZIP debe aparecer el fichero ~index.js~, no debe aparecer una carpeta en su interior.
 #+end_quote
 
-A continuación, accede al entorno de Beanstalk y sube el ZIP creado. Espera un tiempo, refresca la URL de la aplicación y comprueba que se muestra la web del proyecto.
+A continuación, accede al entorno de Beanstalk y sube el ZIP creado.
+
+[[./imagenes/10.png]]
+
+Espera un tiempo, refresca la URL de la aplicación y comprueba que se muestra la web del proyecto.
+
+[[./imagenes/11.png]]
 
 * Actualización del código a través de la línea de comando
 Si accedes al enlace que pone *Despedida*, verás que no funciona. En este apartado realizaremos una corrección del código y procederemos a desplegar la aplicación corregida.
@@ -91,12 +99,16 @@ A continuación, sitúate en la carpeta del proyecto (~practicas-adman/06-beanst
 Responde a las preguntas que te indique:
 1. Selecciona la región apropiada
 2. Elige la opción que haga referencia a la aplicación Beanstalk que tengas creada
-3. Selecciona el entorno correspondiente
 
-Verás que al finalizar, se crea una carpeta denominada ~.ebextensions~. En ella se almacena la configuración del entorno para que futuras ejecuciones del comando ~eb~ puedan acceder a los datos del entorno correcto.
+Verás que al finalizar, se crea una carpeta oculta denominada ~.elasticbeanstalk~. En ella se almacena la configuración del entorno para que futuras ejecuciones del comando ~eb~ puedan acceder a los datos del entorno correcto.
 
 ** Actualización de cambios y despliegue de la aplicación
-Edita el fichero ~index.js~ (mediante el editor de tu elección, como por ejemplo ~nano~). Descomenta el código señalado como ~TODO~. A continuación, guarda los cambios en el fichero.
+Edita el fichero ~index.js~ (mediante el editor de tu elección, como por ejemplo ~nano~). Realiza los siguientes *cambios*:
+1. Descomenta el código señalado como ~TODO~ en la ruta ~/adios~.
+2. Modifica la línea señalada como ~TODO~ que hace referencia a *TUS_INICIALES* y sustituye TUS_INICIALES por tus iniciales reales, para hacer referencia al parámetro existente.
+2. Modifica la línea señalada como ~TODO~ que hace referencia a *TU_REGION* y sustituye TU_REGION por la región donde estés trabajando.
+
+A continuación, guarda los cambios en el fichero.
 
 Seguidamente, ejecuta el siguiente comando para desplegar la aplicación actualizada:
 #+begin_src bash
@@ -127,6 +139,13 @@ Accede a la URL de la aplicación y pulsa en el enlace con texto *Parámetro de 
 1. ¿Se muestra el valor del parámetro?
 2. En caso contrario, ¿cuál puede ser el motivo?
 3. Si no se muestra el valor esperado, intenta resolver el problema y explica los pasos seguidos.
+
+#+begin_quote
+[!TIP]
+Parece que es un problema de permisos, ¿verdad? Recuerda que hemos creado dos roles en esta práctica. ¿Crees que alguno de ellos está relacionado con este tema?
+
+Recuerda también que el código de la aplicación se está ejecutando desde una máquina EC2.
+#+end_quote
 
 * Eliminación del entorno de Beanstalk
 Desde CloudShell, en la carpeta del proyecto, ejecuta el siguiente comando para eliminar el entorno:

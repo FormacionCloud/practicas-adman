@@ -36,7 +36,9 @@ router.get("/parametro", async (req, res) => {
   const param_name = "/practica-secretos/TUS_INICIALES/param1";
 
   // Cliente de SSM
-  const client = new SSMClient();
+  // TODO: actualizar la región
+  const config = { region: "TU_REGION" };
+  const client = new SSMClient(config);
 
   // Configuración de la petición
   const input = {
