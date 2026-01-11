@@ -41,6 +41,11 @@ Esa línea define el puerto de escucha de nuestra aplicación. Como puedes compr
 
 Al crear la infraestructura necesaria para la aplicación web, Beanstalk redirigirá el tráfico de la URL de la aplicación a un puerto específico de la máquina EC2 que sirva el tráfico. Dicho puerto es referenciado por esa variable de entorno.
 
+Por último, comentar que la aplicación escucha en 3 rutas en su URL:
+1. ~/~ - Ruta raíz. Muestra un mensaje con un texto genérico del tipo "Hola mundo".
+2. ~/adios~ - Muestra un mensaje con un texto genérico del tipo "Adiós mundo". En principio está comentada, por lo que no es funcional. Más adelante descomentaremos este código.
+3. ~/parametro~ - Mostrará el contenido de un parámetro de Systems Manager Parameter Store. Más adelante entraremos en más detalles.
+
 ** Descarga y actualización del código de manera manual
 Clona el repositorio en tu equipo de trabajo si no lo has hecho ya. Accede a la carpeta del proyecto (~practicas-adman/06-beanstalk~) y comprime el contenido de dicha carpeta.
 
@@ -96,7 +101,23 @@ Verás que la línea de comandos de Beanstalk realiza una serie de tareas para d
 ** Comprobación de resultados
 Accede a la URL de la aplicación desplegada. Accede al enlace con el texto *Despedida* y comprueba que funciona correctamente.
 
-** Eliminación del entorno de Beanstalk
+* Acceso a servicios de AWS a través del SDK
+En este apartado veremos cómo acceder mediante el SDK de JavaScript de AWS al servicio de Systems Manager Parameter Store. Para ello, utilizaremos el *parámetro creado* en la *práctica de secretos del módulo de Sistemas y Almacenamiento*.
+
+#+begin_quote
+[!TIP]
+Si no has hecho esa práctica o ya has borrado el parámetro, crea uno nuevo con nombre ~/practica-secretos/TUS_INICIALES/param1~, cambiando TUS_INICIALES por tus iniciales reales. Tienes las instrucciones en el enunciado de dicha práctica, en su repositorio en GitHub.
+#+end_quote
+
+En el archivo ~index.js~, en el gestor de la ruta ~/parametro~, tienes el código convenientemente explicado. Verás que el código de la aplicación construye una petición para interactuar con el servicio de Systems Manager Parameter Store y mostrar el resultado de dicha petición.
+
+Accede a la URL de la aplicación y pulsa en el enlace con texto *Parámetro de SSM*. Verás que navegas a la ruta ~/parametro~. Comprueba qué mensaje se muestra y responde a las siguientes preguntas:
+
+1. ¿Se muestra el valor del parámetro?
+2. En caso contrario, ¿cuál puede ser el motivo?
+3. Si no se muestra el valor esperado, intenta resolver el problema y explica los pasos seguidos.
+
+* Eliminación del entorno de Beanstalk
 Desde CloudShell, en la carpeta del proyecto, ejecuta el siguiente comando para eliminar el entorno:
 
 #+begin_src bash

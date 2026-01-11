@@ -9,9 +9,9 @@
   "author": "Pedro Prieto",
   "license": "MIT",
   "dependencies": {
+    "@aws-sdk/client-ssm": "^3.966.0",
     "body-parser": "^1.20.2",
     "express": "^4.18.2",
     "pug": "^3.0.2"
-  },
-  "devDependencies": {}
+  }
 }
