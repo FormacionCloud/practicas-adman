@@ -30,6 +30,8 @@ En esta práctica realizaremos un despliegue de una aplicación *NodeJS* en AWS 
 
 Para terminar, pasados unos minutos, cuando el entorno esté en estado *Healthy*, accede a la URL de la aplicación y comprueba que se muestra la aplicación de ejemplo de AWS.
 
+[[./imagenes/08.png]]
+
 ** Comprobación de la infraestructura creada por Beanstalk
 Accede a la consola de EC2. Comprueba que se ha creado una *máquina virtual* automáticamente. Dicha máquina estará gestionada por el servicio Beanstalk. De esta manera, solo deberemos preocuparnos del código de la aplicación: toda la *infraestructura* estará *gestionada* automáticamente por *AWS* a través de Beanstalk.
 
