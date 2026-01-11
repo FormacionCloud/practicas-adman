@@ -7,19 +7,28 @@ Esta práctica la realizaremos en la *Landing Zone*.
 En esta práctica realizaremos un despliegue de una aplicación *NodeJS* en AWS Beanstalk.
 
 * Creación de una aplicación y entorno Beanstalk
-En primer lugar, crearemos una aplicación Beanstalk y un entorno de ejecución. El nombre de la aplicación debe incluir tu *nombre y apellidos*.
+1. En primer lugar, crearemos un entorno Beanstalk junto con su aplicación correspondiente. Para ello, accede al servicio Beanstalk, sección *Environments*, y pulsa en el botón *Create environment*.
+2. En *Environment Tier*, selecciona *Web server environment*.
+3. El nombre de la aplicación y el nombre del entorno deben incluir tu *nombre y apellidos*.
+   [[./imagenes/01.png]]
+4. Como *plataforma* de aplicación, elige la última versión de *NodeJS*.
+5. A la hora de seleccionar el *código*, elegiremos desplegar la *aplicación de prueba*.
+6. En los ajustes *Presets*, selecciona *Single instance*.
+   [[./imagenes/02.png]]
+7. Deberás crear *dos roles* (puedes hacerlo desde el propio asistente de Beanstalk, dejando los permisos que se proponen por defecto):
+  [[ ./imagenes/03.png]]
+   - El rol para que Beanstalk pueda desplegar los recursos
+     [[./imagenes/04.png]]
+   - El rol que se utilizará como *perfil de instancia* de las instancias que lanzará Beanstalk
+     [[./imagenes/05.png]]
+8. Selecciona una VPC con una subred pública como mínimo (no utilizaremos balanceadores de carga, solo instancias únicas, así que deben ser accesibles por IP pública). Si no tienes ninguna, créala.
+   [[./imagenes/06.png]]
+9. No crees base de datos, no la utilizaremos.
+10. Asigna un disco SSD de 10GB para las instancias:
+    [[./imagenes/07.png]]
+11. Deja el resto de opciones por defecto y pulsa el botón *Create*.
 
-Deberás crear *dos roles* (puedes hacerlo desde el propio asistente de Beanstalk):
-- El rol para que Beanstalk pueda desplegar los recursos
-- El rol que se utilizará como *perfil de instancia* de las instancias que lanzará Beanstalk
-
-Como plataforma de aplicación, elige la última versión de *NodeJS*.
-
-En el apartado de infraestructura, selecciona una única máquina EC2.
-
-A la hora de seleccionar el código, elegiremos desplegar la *aplicación de prueba*.
-
-Por último, accede a la URL de la aplicación y comprueba que se muestra la aplicación de ejemplo de AWS.
+Para terminar, pasados unos minutos, cuando el entorno esté en estado *Healthy*, accede a la URL de la aplicación y comprueba que se muestra la aplicación de ejemplo de AWS.
 
 ** Comprobación de la infraestructura creada por Beanstalk
 Accede a la consola de EC2. Comprueba que se ha creado una *máquina virtual* automáticamente. Dicha máquina estará gestionada por el servicio Beanstalk. De esta manera, solo deberemos preocuparnos del código de la aplicación: toda la *infraestructura* estará *gestionada* automáticamente por *AWS* a través de Beanstalk.
