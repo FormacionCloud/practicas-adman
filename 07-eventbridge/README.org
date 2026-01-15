@@ -39,11 +39,11 @@ Antes de crear la regla, *contesta a la siguiente pregunta*: ¿Qué tipo de bus 
 
 Adjunta captura de pantalla de la sección /Build Event pattern/, en la que se muestra cómo configurar los eventos sobre los que se desea actuar.
 
-A continuación puedes ver cómo configurar el destino en la seccion /Select target/ del asistente:
+A continuación puedes ver cómo configurar el destino en la sección /Select target/ del asistente:
 [[./imagenes/06-target.png]]
 
 * Entrega
-Antes de realizar la entrega del documento, *pon en marcha* o *detén* alguna máquina virtual de EC2 y *envía un mensaje al profesor* para que compruebe si el evento ha sido recibido correctamente. Una vez tengas la confirmación, puedes hacer la entrega del documento.
+Antes de realizar la entrega del documento, *pon en marcha* o *detén* alguna máquina virtual de EC2 y *envía un correo electrónico al profesor* para que compruebe si el evento ha sido recibido correctamente. Una vez tengas la confirmación, puedes hacer la entrega del documento.
 
 Documenta la realización de la práctica explicando los pasos seguidos. Incluye las *capturas de pantalla* necesarias. Recuerda mostrar tus datos personales (nombre y apellidos y/o iniciales) en aquellos apartados donde se indique.
 
