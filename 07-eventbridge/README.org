@@ -28,10 +28,9 @@ Para terminar, se configurará una *regla* para que envíe una notificación por
 
 A continuación puedes ver el ARN del bus de eventos de la cuenta del profesor, que necesitarás en el siguiente paso:
 
-```
+#+begin_src
 arn:aws:events:us-east-1:404438824232:event-bus/busmaquinasvirtuales
-
-```
+#+end_src
 
 * Realización de la práctica: configuración de Eventbridge
 Siguiendo los ejemplos de los laboratorios de SkillBuilder realizados, configura una *regla de Eventbridge* para que se envíen los *eventos de cambio de estado de instancias de EC2* al *bus de eventos del profesor*, referenciado por el ARN indicado en el apartado anterior. El nombre de la regla debe incluir tu *nombre y apellidos*.
