@@ -98,6 +98,8 @@ arn:aws:events:us-east-1:404438824232:event-bus/busmaquinasvirtuales
 #+end_src
 
 * Realización de la práctica: configuración de Eventbridge
+[[./imagenes/00-arquitectura.png]]
+
 Siguiendo los ejemplos de los laboratorios de SkillBuilder realizados, configura una *regla de Eventbridge* para que se envíen los *eventos de cambio de estado de instancias de EC2* al *bus de eventos del profesor*, referenciado por el ARN indicado en el apartado anterior. El nombre de la regla debe incluir tu *nombre y apellidos*.
 
 Antes de crear la regla, *contesta a la siguiente pregunta*: ¿Qué tipo de bus de Eventbridge debes utilizar? ¿El bus por defecto o un bus personalizado tipo /custom/? ¿Por qué?
