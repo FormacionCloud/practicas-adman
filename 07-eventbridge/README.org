@@ -8,9 +8,6 @@ En esta práctica configuraremos el servicio EventBridge para enviar eventos a u
 
 #+begin_src plantuml :file ./imagenes/00-arquitectura.png :exports results
   @startuml VPC
-  ' Uncomment the line below for "dark mode" styling
-  '!$AWS_DARK = true
-
   !define AWSPuml https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/v19.0/dist
   !include AWSPuml/AWSCommon.puml
   !include AWSPuml/ApplicationIntegration/EventBridge.puml
@@ -51,6 +48,34 @@ En esta práctica configuraremos el servicio EventBridge para enviar eventos a u
 [!note]
 Esta tarea ya ha sido realizada por el profesor en su cuenta de AWS.
 #+end_quote
+
+#+begin_src plantuml :file ./imagenes/00-arquitectura_2.png :exports results
+  @startuml VPC
+  !define AWSPuml https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/v19.0/dist
+  !include AWSPuml/AWSCommon.puml
+  !include AWSPuml/ApplicationIntegration/EventBridge.puml
+  !include AWSPuml/ApplicationIntegration/SimpleNotificationServiceTopic.puml
+  !include AWSPuml/AWSSimplified.puml
+  !include AWSPuml/General/Email.puml
+  !include AWSPuml/Compute/EC2.puml
+  !include AWSPuml/Groups/AWSCloud.puml
+
+  left to right direction
+
+  AWSCloudGroup(cloud2,"Cuenta AWS profesor") {
+      EventBridge(eventbridge2, "Eventbridge", "")
+      SimpleNotificationServiceTopic(sns1, "SNS", "")
+      Email(email, "Email", "")
+
+      eventbridge2 --> sns1 : "Envío a SNS"
+      sns1 --> email : "Suscripción\na correo"
+  }
+
+  @enduml
+#+end_src
+
+#+RESULTS:
+[[file:./imagenes/00-arquitectura_2.png]]
 
 En primer lugar, es necesario crear un bus de tipo /custom/ en la cuenta de destino. Para ello solo es necesario elegir un nombre y dejar el resto de datos por defecto.
 [[./imagenes/01-custom-bus.png]]
