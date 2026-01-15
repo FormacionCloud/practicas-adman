@@ -1,0 +1,53 @@
+* Gestión de eventos entre cuentas con EventBridge
+#+begin_quote
+[!important]
+Esta práctica la realizaremos en la *Landing Zone*. 
+#+end_quote
+
+En esta práctica configuraremos el servicio EventBridge para enviar eventos a un bus de eventos disponible en la cuenta de AWS del profesor.
+
+* Preparación previa (realizada por el profesor)
+#+begin_quote
+[!note]
+Esta tarea ya ha sido realizada por el profesor en su cuenta de AWS.
+#+end_quote
+
+En primer lugar, es necesario crear un bus de tipo /custom/ en la cuenta de destino. Para ello solo es necesario elegir un nombre y dejar el resto de datos por defecto.
+[[./imagenes/01-custom-bus.png]]
+
+A continuación, es necesario modificar la *política de recurso* del bus para permitir el envío de eventos desde las cuentas a las que se les permitirá el envío de eventos. Para ello es necesario modificar la pestaña *Permissions* y editar a continuación la *Resource-based policy* del bus de eventos, indicando los identificadores de las cuentas a las que se les desea conceder permisos, de acuerdo con la [[https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_principal.html#principal-accounts][documentación de AWS]]:
+[[./imagenes/02-permissions.png]]
+
+Este paso se puede realizar de manera sencilla pulsando sobre el botón ~Load template~, que proporciona una *plantilla de ejemplo* con varios casos de uso, entre los que se encuentra el conceder acceso a otras cuentas de AWS. Para ello, es necesario elegir la sección correspondiente, eliminar todos los comentarios y añadir los números de cuenta autorizados para dejar la estructura tal como se indicaba en la captura anterior.
+[[./imagenes/03-permissions.png]]
+
+Para terminar, se configurará una *regla* para que envíe una notificación por correo electrónico a través del servicio SNS para que el profesor reciba las notificaciones y compruebe la correcta realización de la práctica. La regla se encargará de escuchar los *eventos de cambio de estado de máquinas EC2* que se produzcan en las cuentas del alumnado. El alumnado deberá, en el siguiente paso de la práctica, configurar su bus de eventos por defecto para reenviar dichos eventos al bus de la cuenta del profesor.
+[[./imagenes/04-rules.png]]
+
+[[./imagenes/05-sns.png]]
+
+A continuación puedes ver el ARN del bus de eventos de la cuenta del profesor, que necesitarás en el siguiente paso:
+
+```
+arn:aws:events:us-east-1:404438824232:event-bus/busmaquinasvirtuales
+
+```
+
+* Realización de la práctica: configuración de Eventbridge
+Siguiendo los ejemplos de los laboratorios de SkillBuilder realizados, configura una *regla de Eventbridge* para que se envíen los *eventos de cambio de estado de instancias de EC2* al *bus de eventos del profesor*, referenciado por el ARN indicado en el apartado anterior. El nombre de la regla debe incluir tu *nombre y apellidos*.
+
+Antes de crear la regla, *contesta a la siguiente pregunta*: ¿Qué tipo de bus de Eventbridge debes utilizar? ¿El bus por defecto o un bus personalizado tipo /custom/? ¿Por qué?
+
+Adjunta captura de pantalla de la sección /Build Event pattern/, en la que se muestra cómo configurar los eventos sobre los que se desea actuar.
+
+A continuación puedes ver cómo configurar el destino en la seccion /Select target/ del asistente:
+[[./imagenes/06-target.png]]
+
+* Entrega
+Antes de realizar la entrega del documento, *pon en marcha* o *detén* alguna máquina virtual de EC2 y *envía un mensaje al profesor* para que compruebe si el evento ha sido recibido correctamente. Una vez tengas la confirmación, puedes hacer la entrega del documento.
+
+Documenta la realización de la práctica explicando los pasos seguidos. Incluye las *capturas de pantalla* necesarias. Recuerda mostrar tus datos personales (nombre y apellidos y/o iniciales) en aquellos apartados donde se indique.
+
+
+* Limpieza
+Al finalizar la práctica, siempre que hayas obtenido la confirmación del correcto funcionamiento por parte del profesor, borra la regla de Eventbridge.
