@@ -52,15 +52,15 @@ Para *eliminar la infraestructura* al finalizar, sigue las [[https://catalog.wor
 En primer lugar, [[https://catalog.workshops.aws/observability/en-US/architecture][explora la arquitectura y la aplicación web]] en la sección correspondiente.
 
 A continuación, realiza las siguientes *tareas* del taller:
-- Sección *AWS native Observability / Logs / Getting started with logs ingestion*, completa con todas sus subsecciones
+- Sección *AWS native Observability / Logs / Getting started with logs ingestion*, completa, con todas sus subsecciones
 - Sección *AWS native Observability / Logs / Logs Insights*, hasta la subsección *Querying with AWS CLI* incluida
-- Sección *AWS native Observability / Logs / Log Anomaly Detector & Pattern Analysis*, completa con todas sus subsecciones
-- Sección *AWS native Observability / Metrics*, completa, con la excepción de la subsección *Embedded Metric Format*.
+- Sección *AWS native Observability / Logs / Log Anomaly Detector & Pattern Analysis*, completa, con todas sus subsecciones
+- Sección *AWS native Observability / Metrics*, completa, con la *excepción* de la subsección *Embedded Metric Format*.
 
 * Entrega
 #+begin_quote
 [!important]
-Incluye solo una captura por subsección, para minimizar la carga de trabajo. Incluye tus iniciales cuando haya que crear algún elemento.
+Incluye *solo una captura por subsección*, para minimizar la carga de trabajo. Incluye tus iniciales cuando haya que crear algún elemento.
 #+end_quote
 
 Documenta la realización de la práctica explicando los pasos seguidos. Incluye las *capturas de pantalla* necesarias. Recuerda mostrar tus datos personales (nombre y apellidos y/o iniciales) en aquellos apartados donde se indique.
