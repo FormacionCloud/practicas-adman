@@ -1,0 +1,74 @@
+* Observabilidad I
+#+begin_quote
+[!important]
+Esta práctica la realizaremos en la *Landing Zone*.
+#+end_quote
+
+En esta práctica realizaremos parte del Workshop [[https://catalog.workshops.aws/observability/en-US][One Observability Workshop]] de AWS.
+
+* Instalación y configuración previa
+#+begin_quote
+[!important]
+Es importante seguir la configuración indicada en estas instrucciones, ya que se han adaptado algunos aspectos importantes con respecto al [[https://github.com/aws-samples/one-observability-demo][repositorio oficial]]. Concretamente:
+- Se ha cambiado la versión de Kubernetes a una versión standard, en lugar de una versión extendida, lo que se traduce en un ahorro importante de costes de infraestructura
+- Se han incorporado los cambios de esta [[https://github.com/aws-samples/one-observability-demo/pull/394][Pull Request]], que adapta la infraestructura a los últimos cambios realizados por AWS en las cuotas de las funciones Lambda
+
+Los cambios realizados están almacenados en la rama ~FIX_TooManyRequestsException_Rate_Exceeded~ de [[https://github.com/pedroprieto/one-observability-demo/tree/FIX_TooManyRequestsException_Rate_Exceeded][este repositorio]].
+#+end_quote
+
+Para instalar la infraestructura sobre la que trabajar, ejecuta los siguientes comandos desde *CloudShell*:
+
+#+begin_src bash
+  curl -O https://raw.githubusercontent.com/pedroprieto/one-observability-demo/main/codepipeline-stack.yaml
+#+end_src
+
+#+begin_src bash
+  aws cloudformation create-stack --stack-name Observability-Workshop \
+    --template-body file://codepipeline-stack.yaml \
+    --capabilities CAPABILITY_NAMED_IAM \
+    --parameters ParameterKey=GithubBranch,ParameterValue=FIX_TooManyRequestsException_Rate_Exceeded ParameterKey=GithubUser,ParameterValue=pedroprieto ParameterKey=UserRoleArn,ParameterValue=$(aws iam get-role --role-name $(aws sts get-caller-identity --query Arn --output text | awk -F/ '{print $(NF-1)}') --query Role.Arn --output text)
+#+end_src
+
+#+begin_quote
+[!important]
+La creación de la infraestructura llevará *más de 30 minutos*. Después de ejecutar los comandos anteriores se creará un *stack de CloudFormation*, que a su vez creará varios stacks anidados. Puedes consultar el estado de la creación accediendo a dicho servicio en la consola. En cualquier caso, puedes dejar la instalación en segundo plano y volver pasado ese tiempo.
+#+end_quote
+
+#+begin_quote
+[!important]
+La infraestructura que se creará es compleja. Puedes ver un diagrama en la [[https://catalog.workshops.aws/observability/en-US/architecture][documentación oficial]]. No te preocupes: no es necesario comprenderla completamente. Basta saber que crea varios clústers de contenedores para alojar una aplicación compleja que genera una gran cantidad de *logs*, *métricas* y *trazas*.
+
+El objetivo de la práctica es utilizar servicios de *monitorización y observabilidad* para realizar análisis de dichos logs, métricas y trazas.
+#+end_quote
+
+#+begin_quote
+[!important]
+El *coste* de la infraestructura puede ser elevado si se mantiene en marcha durante mucho tiempo. Por ello, destrúyela al finalizar la práctica. Puedes tenerla en marcha algunos días, pero no mucho más.
+
+Para *eliminar la infraestructura* al finalizar, sigue las [[https://catalog.workshops.aws/observability/en-US/cleanup#delete-all-resources][instrucciones oficiales]] (solo debes ejecutar el paso 2, /Delete the stack/).
+#+end_quote
+
+* Pasos a realizar
+En primer lugar, [[https://catalog.workshops.aws/observability/en-US/architecture][explora la arquitectura y la aplicación web]] en la sección correspondiente.
+
+A continuación, realiza las siguientes *tareas* del taller:
+- Sección *AWS native Observability / Logs / Getting started with logs ingestion*, completa con todas sus subsecciones
+- Sección *AWS native Observability / Logs / Logs Insights*, hasta la subsección *Querying with AWS CLI* incluida
+- Sección *AWS native Observability / Logs / Log Anomaly Detector & Pattern Analysis*, completa con todas sus subsecciones
+- Sección *AWS native Observability / Metrics*, completa, con la excepción de la subsección *Embedded Metric Format*.
+
+* Entrega
+#+begin_quote
+[!important]
+Incluye solo una captura por subsección, para minimizar la carga de trabajo. Incluye tus iniciales cuando haya que crear algún elemento.
+#+end_quote
+
+Documenta la realización de la práctica explicando los pasos seguidos. Incluye las *capturas de pantalla* necesarias. Recuerda mostrar tus datos personales (nombre y apellidos y/o iniciales) en aquellos apartados donde se indique.
+
+
+* Limpieza
+Recuerda *eliminar toda la infraestructura* al terminar, siguiendo las [[https://catalog.workshops.aws/observability/en-US/cleanup#delete-all-resources][instrucciones oficiales]]. Es necesario ejecutar el siguiente comando en CloudShell. Igual que ocurre con la instalación, la eliminación de recursos también llevará un tiempo considerable. Recuerda confirmar en *CloudFormation* que se han eliminado todos los stacks.
+
+#+begin_src bash
+curl https://raw.githubusercontent.com/aws-samples/one-observability-demo/main/PetAdoptions/cdk/pet_stack/resources/destroy_stack.sh | bash
+#+end_src
