@@ -69,7 +69,7 @@ Documenta la realización de la práctica explicando los pasos seguidos. Incluye
 
 
 * Limpieza
-Recuerda *eliminar toda la infraestructura* al terminar, siguiendo las [[https://catalog.workshops.aws/observability/en-US/cleanup#delete-all-resources][instrucciones oficiales]]. Es necesario ejecutar el siguiente comando en CloudShell. Igual que ocurre con la instalación, la eliminación de recursos también llevará un tiempo considerable. Recuerda confirmar en *CloudFormation* que se han eliminado todos los stacks.
+Recuerda *eliminar toda la infraestructura* al terminar, siguiendo las [[https://catalog.workshops.aws/observability/en-US/cleanup#delete-all-resources][instrucciones oficiales]]. Es necesario ejecutar el siguiente comando en CloudShell. Igual que ocurre con la instalación, la eliminación de recursos también llevará un tiempo considerable. Recuerda confirmar en *CloudFormation* que se han eliminado todos los stacks. En caso contrario, *ejecuta de nuevo el script de desinstalación*.
 
 #+begin_src bash
 curl https://raw.githubusercontent.com/aws-samples/one-observability-demo/main/PetAdoptions/cdk/pet_stack/resources/destroy_stack.sh | bash
