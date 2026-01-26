@@ -45,7 +45,7 @@ El objetivo de la práctica es utilizar servicios de *monitorización y observab
 [!important]
 El *coste* de la infraestructura puede ser elevado si se mantiene en marcha durante mucho tiempo. Por ello, *destrúyela al finalizar la práctica*. Por favor, *no la tengas en marcha más de un día*.
 
-De modo complementario, puedes *detener las tareas* para ahorrar costes. De este modo, ten en cuenta, no se generarán nuevos logs. Para ello, sigue las instrucciones, en el apartado[[https://catalog.workshops.aws/observability/en-US/cleanup#option-1-stopstart-ecs-tasks-and-set-eks-node-count-to-0][Option 1 - Stop/Start ECS Tasks and set EKS Node count to 0]].
+De modo complementario, puedes *detener las tareas* para ahorrar costes. De este modo, ten en cuenta, no se generarán nuevos logs. Para ello, sigue las instrucciones, en el apartado [[https://catalog.workshops.aws/observability/en-US/cleanup#option-1-stopstart-ecs-tasks-and-set-eks-node-count-to-0][Option 1 - Stop/Start ECS Tasks and set EKS Node count to 0]].
 
 Para *eliminar la infraestructura* al finalizar, sigue las [[https://catalog.workshops.aws/observability/en-US/cleanup#delete-all-resources][instrucciones oficiales]] (solo debes ejecutar el paso 2, /Delete the stack/).
 #+end_quote
