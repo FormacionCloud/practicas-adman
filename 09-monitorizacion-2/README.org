@@ -54,6 +54,7 @@ Para *eliminar la infraestructura* al finalizar, sigue las [[https://catalog.wor
 Se supone que estás familiarizado con la arquitectura. En caso contrario, [[https://catalog.workshops.aws/observability/en-US/architecture][explora la arquitectura y la aplicación web]] en la sección correspondiente.
 
 A continuación, realiza las siguientes *tareas* del taller:
+- Sección *AWS native Observability / Application performance monitoring / X-Ray traces*, completa, con todas sus subsecciones
 - Sección *AWS native Observability / Application performance monitoring / CloudWatch Synthetics*, hasta la subsección *Canary Alarms*, incluida
 - Sección *AWS native Observability / Application performance monitoring / CloudWatch RUM*, completa, con todas sus subsecciones
 - Sección *AWS native Observability / Insights / Lambda Insights*, completa, con todas sus subsecciones
