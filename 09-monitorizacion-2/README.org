@@ -77,3 +77,9 @@ Recuerda *eliminar toda la infraestructura* al terminar, siguiendo las [[https:/
 #+begin_src bash
 curl https://raw.githubusercontent.com/aws-samples/one-observability-demo/main/PetAdoptions/cdk/pet_stack/resources/destroy_stack.sh | bash
 #+end_src
+
+*Adicionalmente*, *borra manualmente* los siguientes recursos que habrás creado durante la práctica:
+- Cognito Identity Role
+- Cloudwatch RUM app monitor
+- Cloudwatch Synthetics Canary (previamente deberás detenerlo y a continuación borrarlo)
+- Cloudwatch alarms
