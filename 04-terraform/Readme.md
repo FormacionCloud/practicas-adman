@@ -1037,6 +1037,9 @@ Realiza las **modificaciones** necesarias en el código propuesto para realizar 
 - Desplegar una actualización de la infraestructura añadiendo **dos instancias** como valor deseado en el **grupo de autoescalado**.
 - Modificar la **base de datos RDS** para que implemente una configuración de **Despliegue Multi-AZ**. Fuente: https://registry.terraform.io/modules/terraform-aws-modules/rds/aws/latest. Nota: la aplicación de los cambios puede realizarse inmediatamente o durante la ventana de mantenimiento. Añade la línea necesaria para **aplicarlos inmediatamente**.
 
+> [!NOTE]
+> Si tienes problemas durante el despliegue de los cambios, borra toda la infraestructura con `terraform destroy` y vuelve a desplegarla de nuevo. El hecho de cambiar el prefijo a veces da problemas.
+
 Comprueba que efectivamente ahora tenemos Alta Disponibilidad, al tener recursos de aplicación web y de base de datos en dos AZs.
 
 **Documenta** la realización de la práctica explicando los pasos seguidos. Incluye las **capturas de pantalla** necesarias. Recuerda mostrar tus datos personales (nombre y apellidos y/o iniciales) en aquellos apartados donde se indique.
