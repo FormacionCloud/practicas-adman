@@ -1,0 +1,89 @@
+* Integración continua 2 - Despliegue
+#+begin_quote
+[!important]
+Esta práctica la realizaremos en la *Landing Zone*.
+#+end_quote
+
+En esta práctica realizaremos el *despliegue automático* de dos tipos de aplicaciones:
+1. Una *aplicación web estática*
+2. Una *aplicación móvil Android*
+
+Utilizaremos el servicio de *GitHub Actions* para ello.
+
+** Recursos
+- [[https://resources.github.com/devops/][DevOps]]
+
+* Aplicación web estática
+Utilizaremos *AWS S3* para desplegar de manera automática una aplicación web estática, basada únicamente en HTML, CSS y JavaScript.
+
+** Creación del repositorio
+Crea un repositorio nuevo vacío *en tu cuenta de GitHub*. Una vez creado, copia en su interior el *contenido de la carpeta* ~/clienteweb~ de este repositorio. Sube los cambios a GitHub.
+
+#+begin_quote
+[!IMPORTANT]
+Copia el *contenido de la carpeta*. En la raíz del repositorio que crees deberán aparecer todos los archivos, no una única carpeta.
+#+end_quote
+
+** Puesta en marcha del servidor de despliegue
+Crea un *bucket* en la cuenta de AWS y configúralo como *sitio web estático*.
+ 
+** Proceso de compilación
+La aplicación web que se incluye está localizada en la carpeta ~clienteweb~ de este repositorio. Se trata de una aplicación *VueJS* que requiere una *fase de compilación* para generar el resultado. Para realizar la compilación de la aplicación será necesario ejecutar el comando ~npm run build~. Dicho comando generará una carpeta ~./dist~, que contendrá  los *archivos para desplegar* en S3.
+
+** Despliegue continuo
+Configura *en tu repositorio* una *acción de GitHub Actions* que realice los siguientes pasos:
+1. Descargar el código del repositorio
+2. Instalar una versión reciente de NodeJS
+3. Instalar las dependencias mediante ~npm install~
+4. Ejecutar los tests
+5. Compilar la aplicación mediante ~npm run build~.
+6. Copiar el contenido de la carpeta ~./dist~ al bucket de S3. Para ello puedes utilizar el comando ~aws s3 sync~.
+
+#+begin_quote
+[!NOTE]
+Puedes utilizar como base la acción de proyectos de NodeJS y añadir a continuación los comandos que falten.
+#+end_quote
+
+#+begin_quote
+[!NOTE]
+La CLI de AWS está instalada por defecto en GiHub Actions, por lo que dicho comando estará disponible en la máquina que ejecute la tarea de integración continua.
+#+end_quote
+
+#+begin_quote
+[!IMPORTANT]
+Recuerda crear los *secretos* y *variables de entorno* necesarios con las credenciales de AWS de la cuenta.
+#+end_quote
+
+* Aplicación web Android
+En segundo lugar, realizaremos un despliegue de una *aplicación móvil* realizada con *flutter*. El proceso de compilación creará un archivo APK y un archivo AAB que serán subidos a [[https://docs.github.com/en/repositories/releasing-projects-on-github/managing-releases-in-a-repository][GitHub Releases]].
+
+** Creación del repositorio
+Crea un *segundo repositorio* nuevo vacío *en tu cuenta de GitHub*. Una vez creado, copia en su interior el *contenido de la carpeta* ~/aplicacionmovil~ de este repositorio. Sube los cambios a GitHub.
+
+#+begin_quote
+[!IMPORTANT]
+Copia el *contenido de la carpeta*. En la raíz del repositorio que crees deberán aparecer todos los archivos, no una única carpeta.
+#+end_quote
+
+** Configuración de la acción
+La aplicación móvil que se incluye está localizada en la carpeta ~aplicacionmovil~ de este repositorio. Se trata de una aplicación *flutter* que requiere de nuevo de una *fase de compilación* para generar el resultado.
+
+Para compilar y testear aplicaciones flutter, necesitaremos instalar dos dependencias:
+- *Java* - Puedes utilizar la acción [[https://github.com/actions/setup-java][Setup-Java]].
+- *Flutter* - Puedes utilizar la acción [[https://github.com/marketplace/actions/flutter-action][Flutter action]].
+
+El comando para instalar las dependencias de un proyecto flutter es:
+#+begin_src bash
+  flutter pub get
+#+end_src
+
+Crearemos dos ejecutables: formato ~AAB~ y formato ~APK~. Para ello, tendrás que [[https://docs.flutter.dev/deployment/android#build-an-app-bundle][generar el AAB]] y a continuación [[https://docs.flutter.dev/deployment/android#build-an-apk][construir el APK]]. Puedes utilizar dos acciones ~run~ para ejecutar los comandos necesarios.
+
+Para realizar el despliegue de los ejecutables en GitHub Releases, utilizaremos la herramienta de línea de comandos ~gh~, disponible en GitHub Actions. La descripción del comando la puedes encontrar aquí: https://cli.github.com/manual/gh_release
+
+Deberás lanzar dos comandos:
+- Uno para [[https://cli.github.com/manual/gh_release_create][crear]] la ~release~
+- Otros dos para [[https://cli.github.com/manual/gh_release_upload][subir]] los archivos
+
+* Entrega de la tarea
+Una vez terminada la tarea, sube a Aules dos *enlaces a los repositorios de GitHub* creados.
