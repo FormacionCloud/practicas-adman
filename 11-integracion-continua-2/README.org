@@ -1,19 +1,19 @@
 * Integración continua 2 - Despliegue
-#+begin_quote
-[!important]
-Esta práctica la realizaremos en la *Landing Zone*.
-#+end_quote
-
 En esta práctica realizaremos el *despliegue automático* de dos tipos de aplicaciones:
 1. Una *aplicación web estática*
 2. Una *aplicación móvil Android*
 
-Utilizaremos el servicio de *GitHub Actions* para ello.
+Utilizaremos el servicio de *GitHub Actions* para integración continua. El despliegue de la aplicación web lo realizaremos en *AWS*. El despliegue del ejecutable móvil se realizará en *GitHub Releases*.
 
 ** Recursos
 - [[https://resources.github.com/devops/][DevOps]]
 
 * Aplicación web estática
+#+begin_quote
+[!important]
+Para esta parte de la práctica utilizaremos la *Landing Zone*.
+#+end_quote
+
 Utilizaremos *AWS S3* para desplegar de manera automática una aplicación web estática, basada únicamente en HTML, CSS y JavaScript.
 
 ** Creación del repositorio
