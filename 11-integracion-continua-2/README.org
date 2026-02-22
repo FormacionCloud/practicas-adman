@@ -90,6 +90,11 @@ Deberás lanzar dos comandos:
 - Uno para [[https://cli.github.com/manual/gh_release_create][crear]] la ~release~
 - Otros dos para [[https://cli.github.com/manual/gh_release_upload][subir]] los archivos
 
+Para crear la release, será necesario dar *permisos de escritura en el repositorio* a la Action de GitHub. Para ello, habrá que utilizar el *token* de GitHub y cambiar sus *permisos*. Para ello, accede a los *ajustes del repositorio* y modifica los permisos en la parte final de la pantalla:
+[[./imagenes/actions-permisos-1.png]]
+
+[[./imagenes/actions-permisos-2.png]]
+
 A continuación se facilita un ejemplo de cómo debería quedar el fichero de GitHub Actions:
 #+begin_src yaml
   name: App Flutter
@@ -99,7 +104,7 @@ A continuación se facilita un ejemplo de cómo debería quedar el fichero de Gi
       branches:
         - master
   env:
-    GH_TOKEN: ${{ github.token }}
+    GH_TOKEN: ${{ github.token }} # token de GitHub para tener permisos para crear la Action
   jobs:
     flutter:
       runs-on: ubuntu-latest
