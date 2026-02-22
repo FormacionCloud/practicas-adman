@@ -90,5 +90,45 @@ Deberás lanzar dos comandos:
 - Uno para [[https://cli.github.com/manual/gh_release_create][crear]] la ~release~
 - Otros dos para [[https://cli.github.com/manual/gh_release_upload][subir]] los archivos
 
+A continuación se facilita un ejemplo de cómo debería quedar el fichero de GitHub Actions:
+#+begin_src yaml
+  name: App Flutter
+
+  on:
+    push:
+      branches:
+        - master
+  env:
+    GH_TOKEN: ${{ github.token }}
+  jobs:
+    flutter:
+      runs-on: ubuntu-latest
+
+      steps:
+        - name: Clonado
+          uses: actions/checkout@v4
+        - name: Configurar Java
+          uses: actions/setup-java@v4.7.1
+          with:
+            distribution: 'temurin'
+            java-version: '17'
+        - name: Instalar flutter
+          uses: subosito/flutter-action@v2
+          with:
+            channel: stable
+            flutter-version: 3.41.0
+        - name: Dependencias del proyecto
+          run: flutter pub get
+        - name: Ejecutar tests
+          run: flutter test
+        - name: Construir APK y AAB
+          run: flutter build apk --release
+        - run: flutter build appbundle --release
+        - name: Crear release
+          run: gh release create "v1.0.0"
+        - name: Subir archivos a release
+          run: gh release upload "v1.0.0" build/app/outputs/flutter-apk/app-release.apk build/app/outputs/bundle/release/app-release.aab
+#+end_src
+
 * Entrega de la tarea
 Una vez terminada la tarea, sube a Aules dos *enlaces a los repositorios de GitHub* creados.
