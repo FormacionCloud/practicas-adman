@@ -54,7 +54,7 @@ La CLI de AWS está instalada por defecto en GiHub Actions, por lo que dicho com
 Recuerda crear los *secretos* y *variables de entorno* necesarios con las credenciales de AWS de la cuenta.
 #+end_quote
 
-* Aplicación web Android
+* Aplicación móvil Android
 En segundo lugar, realizaremos un despliegue de una *aplicación móvil* realizada con *flutter*. El proceso de compilación creará un archivo APK y un archivo AAB que serán subidos a [[https://docs.github.com/en/repositories/releasing-projects-on-github/managing-releases-in-a-repository][GitHub Releases]].
 
 ** Creación del repositorio
